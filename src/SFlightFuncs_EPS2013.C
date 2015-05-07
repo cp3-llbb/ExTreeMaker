@@ -1,6 +1,6 @@
 #include "TF1.h"
 #include <cstdlib>
-#include "UserCode/zbb_louvain/interface/SFlightFuncs_EPS2013.h"
+#include "UserCode/cp3-llbb/interface/SFlightFuncs_EPS2013.h"
 //------------ Exemple of usage --------------
 //
 // In a root session:

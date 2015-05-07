@@ -1,7 +1,7 @@
 /* """ Imported from ExoDiBosonResonances/PATtupleProduction/plugins/ """ */
 
-#ifndef UserCode_zbb_louvain_NjettinessAdder_h
-#define UserCode_zbb_louvain_NjettinessAdder_h
+#ifndef UserCode_cp3_llbb_NjettinessAdder_h
+#define UserCode_cp3_llbb_NjettinessAdder_h
 
 #include <memory>
 #include "FWCore/Framework/interface/Event.h"

@@ -3,7 +3,7 @@
 // Package:    WeightFromTrigger
 // Class:      WeightFromTrigger
 // 
-/**\class WeightFromTrigger WeightFromTrigger.cc UserCode/zbb_louvain/src/WeightFromTrigger.cc
+/**\class WeightFromTrigger WeightFromTrigger.cc src/WeightFromTrigger.cc
 
  Description: Simple code to extract the event weight from the trigger prescales
 
@@ -118,6 +118,7 @@ WeightFromTrigger::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    } else {
      edm::LogError("MyAnalyzer") << "invalid handle for HLT TriggerResults" << std::endl;
    }
+   hltCount = hltCount;
 
    // loop over the triggers and record prescale
    unsigned int minimalPrescale(10000);

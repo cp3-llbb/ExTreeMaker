@@ -9,7 +9,7 @@
 #include "DataFormats/FWLite/interface/ESHandle.h"
 #include "CondFormats/PhysicsToolsObjects/interface/BinningPointByMap.h"
 #include "RecoBTag/PerformanceDB/interface/BtagPerformance.h"
-#include "UserCode/zbb_louvain/interface/btagPerfFWLiteInterface.h"
+#include "UserCode/cp3-llbb/interface/btagPerfFWLiteInterface.h"
 
 btagPerfFWLiteInterface::btagPerfFWLiteInterface(const char* inputfile) {
   //std::cout << "btagPerfFWLiteInterface: Initializing..." << std::endl;

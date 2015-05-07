@@ -4,29 +4,28 @@
 #include <map>
 #include <string>
 #include <utility>
-#include <boost/shared_ptr.hpp>
-#include "UserCode/zbb_louvain/interface/BTagWeight.h"
-#include "UserCode/zbb_louvain/interface/btagPerfPOGformulas.h"
-#include "UserCode/zbb_louvain/interface/btagPerfPOGformulas_nofit.h"
-#include "UserCode/zbb_louvain/interface/btagPerfFWLiteInterface.h"
+#include "UserCode/cp3-llbb/interface/BTagWeight.h"
+#include "UserCode/cp3-llbb/interface/btagPerfPOGformulas.h"
+#include "UserCode/cp3-llbb/interface/btagPerfPOGformulas_nofit.h"
+#include "UserCode/cp3-llbb/interface/btagPerfFWLiteInterface.h"
 
 using namespace std; 
 
 JetSet::JetSet(std::string themode, const char* infile) {
   if(themode=="hardcoded")
-    interface_ = boost::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas());
+    interface_ = std::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas());
   else if(themode=="hardcoded_nofit")
-    interface_ = boost::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas_nofit(infile)); 
+    interface_ = std::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas_nofit(infile)); 
   else if(themode=="database")
-    interface_ = boost::shared_ptr<btagPerfBase>(new btagPerfFWLiteInterface(infile)); 
+    interface_ = std::shared_ptr<btagPerfBase>(new btagPerfFWLiteInterface(infile)); 
   else {
     std::cout << "Warning: UNKNOWN MODE: please check the spelling, 'database' or 'hardcoded' "<< std::endl;
     if(std::string(infile)=="") {
       std::cout << "  using hardcoded values." << std::endl;
-      interface_ = boost::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas());
+      interface_ = std::shared_ptr<btagPerfBase>(new btagPerfPOGFormulas());
     } else {
       std::cout << "  using database." << std::endl;
-      interface_ = boost::shared_ptr<btagPerfBase>(new btagPerfFWLiteInterface(infile));
+      interface_ = std::shared_ptr<btagPerfBase>(new btagPerfFWLiteInterface(infile));
     }
   }
 }

@@ -1,7 +1,7 @@
 /* """ Imported from ExoDiBosonResonances/PATtupleProduction/plugins/ """ */
 
-#include "UserCode/zbb_louvain/plugins/NjettinessAdder.h"
-#include "UserCode/zbb_louvain/interface/Njettiness.hh"
+#include "UserCode/cp3-llbb/plugins/NjettinessAdder.h"
+#include "UserCode/cp3-llbb/interface/Njettiness.hh"
 
 #include "FWCore/Framework/interface/MakerMacros.h"
 

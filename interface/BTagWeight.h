@@ -2,7 +2,7 @@
 #include "TString.h"
 #include <string>
 #include <iostream>
-#include "UserCode/zbb_louvain/interface/btagPerfBase.h"
+#include "UserCode/cp3-llbb/interface/btagPerfBase.h"
 
 // jet info class
 class JetInfo {
@@ -48,7 +48,7 @@ class JetSet {
     void reset() { jets_.clear(); }
   private:
     std::vector<JetInfo> jets_;
-    boost::shared_ptr<btagPerfBase> interface_;
+    std::shared_ptr<btagPerfBase> interface_;
 };
 
 // the algorithm.

@@ -2,6 +2,7 @@
 #define _btagPerfBase_h_
 
 #include <utility>
+#include <memory>
 
 class btagPerfBase {
   public:

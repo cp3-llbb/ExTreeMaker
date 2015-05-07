@@ -9,6 +9,6 @@
 <use   name="EgammaAnalysis/ElectronTools" />
 <use   name="fastjet"/>
 
-<library   file="*.cc" name="UserCodezbb_louvainPlugins">
+<library   file="*.cc" name="UserCodecp3_llbbPlugins">
   <flags   EDM_PLUGIN="1"/>
 </library>
