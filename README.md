@@ -1,5 +1,5 @@
-cp3-llbb
-========
+ExTreeMaker
+===========
 
 *Please note:*
 * The instructions are for the UCLouvain ingrid SLC6 cluster (to access SAMADhi)
@@ -17,7 +17,7 @@ cp3-llbb
  cmsenv
  git cms-init
  cd $CMSSW_BASE/src 
- git clone https://github.com/OlivierBondu/cp3-llbb.git UserCode/cp3-llbb
+ git clone https://github.com/cp3-llbb/ExTreeMaker.git UserCode/cp3-llbb
  cd UserCode/cp3-llbb
  git checkout dev_goingMiniAOD
  scram b -j 4
