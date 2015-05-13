@@ -1,5 +1,5 @@
 #include "DataFormats/Common/interface/Wrapper.h"
 
 //Add includes for your classes here
-#include "UserCode/cp3-llbb/interface/btagPerfFWLiteInterface.h"
-#include "UserCode/cp3-llbb/interface/BTagWeight.h"
+#include "cp3-llbb/ExTreeMaker/interface/btagPerfFWLiteInterface.h"
+#include "cp3-llbb/ExTreeMaker/interface/BTagWeight.h"

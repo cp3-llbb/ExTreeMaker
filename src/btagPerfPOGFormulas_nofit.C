@@ -5,8 +5,8 @@
 #include "TH1F.h"
 #include "TF1.h"
 #include <string>
-#include "UserCode/cp3-llbb/interface/btagPerfPOGformulas_nofit.h"
-#include "UserCode/cp3-llbb/interface/SFlightFuncs_EPS2013.h"
+#include "cp3-llbb/ExTreeMaker/interface/btagPerfPOGformulas_nofit.h"
+#include "cp3-llbb/ExTreeMaker/interface/SFlightFuncs_EPS2013.h"
 
 // uncertainties in Pt bins 
 // according POG reccom., computed for pt 20-800, for pt > 800 GeV: use the SFb value at 800 GeV with twice the quoted uncertainty (go to 1000 GeV for light)
