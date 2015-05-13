@@ -21,7 +21,7 @@ git remote add AlexandreMertens https://github.com/AlexandreMertens/ExTreeMaker.
 git remote add blinkseb https://github.com/blinkseb/ExTreeMaker.git
 
 GITHUBUSERNAME=`git config user.github`
-GITHUBUSERREMOTE=`git remote -v | grep ${GITHUBUSERNAME} | awk '{print $2}' | head -n 1 | cut -d : -f 2`
-git remote add origin git@github.com:${GITHUBUSERREMOTE}
+GITHUBUSERREMOTE=`git remote -v | grep ${GITHUBUSERNAME} | awk '{print $2}' | head -n 1 | cut -d / -f 5`
+git remote add origin git@github.com:${GITHUBUSERNAME}/${GITHUBUSERREMOTE}
 
 #cd ${CMSSW_BASE}/src
