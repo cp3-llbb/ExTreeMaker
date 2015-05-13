@@ -19,7 +19,7 @@ ExTreeMaker
  cd $CMSSW_BASE/src 
  git clone -o upstream https://github.com/cp3-llbb/ExTreeMaker.git cp3-llbb/ExTreeMaker
  cd UserCode/cp3-llbb
- git checkout master
+ git checkout dev_goingMiniAOD
  source setup.sh
  scram b -j 4
  ```
