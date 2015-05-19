@@ -16,7 +16,7 @@ eventWeight     = namedtuple("eventWeight",    ["label","module","classname","kw
 #default configuration: can be used like this on data
 class configuration:
   # default I/O
-  pythonpath = "UserCode.cp3_llbb."
+  pythonpath = "cp3-llbb.ExTreeMaker."
   defaultFilename = "controlPlots"
   RDSname = "rds_zbb"
   WSname = "workspace_ras"
@@ -39,7 +39,7 @@ class configuration:
   doNNJetRegression = False
   JERfactor = 0. # don't change it, should be 0 on data
   JESfactor = 0. # don't change it, should be 0 on data
-  dataDirectory = str(os.environ["CMSSW_BASE"])+"/src/UserCode/cp3_llbb/data/"
+  dataDirectory = str(os.environ["CMSSW_BASE"])+"/src/cp3-llbb/ExTreeMaker/data/"
   jecUncertaintyAK5=dataDirectory+"Summer13_V5_DATA_UncertaintySources_AK5PFchs.txt"
   jecUncertaintyAK7=dataDirectory+"Summer13_V5_DATA_UncertaintySources_AK7PFchs.txt"
 

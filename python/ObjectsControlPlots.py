@@ -6,7 +6,7 @@ from JetCorrectionUncertainty import JetCorrectionUncertaintyProxy
 from ObjectSelection import *
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from UserCode.zbb_louvain.PatAnalysis.CPconfig import configuration
+if confCfg : from PatAnalysis.CPconfig import configuration
 else : from zbbConfig import configuration
 
 class MuonsControlPlots(BaseControlPlots):

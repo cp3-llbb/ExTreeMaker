@@ -1,5 +1,11 @@
 #!/usr/bin/env python 
 
+# import pydevd
+# pydevd.settrace('localhost', port=$SERVER_PORT, stdoutToServer=True, stderrToServer=True)
+# pydevd.settrace('ingrid-ui1.cism.ucl.ac.be', port=22, stdoutToServer=True, stderrToServer=True)
+# import sys
+# sys.path.append('/home/fynu/obondu/Higgs/CMSSW_7_4_0_pre9/src/cp3-llbb/ExTreeMaker/python')
+
 #######################################################################################
 ###  Option parsing and main routine  #################################################
 #######################################################################################
@@ -34,6 +40,8 @@ parser.add_option("--nEvents", type="int", dest='nEvents', default="0",
 
 #special treatment of the config file... the rest of the options will be parsed in main.
 if options.conf is not None:
+#    print options.conf
+#    print os.path.splitext(options.conf)
     theUserConf = __import__(os.path.splitext(options.conf)[0])
     os.environ["PatAnalysisCfg"]=options.conf
 from CPconfig import configuration, printConfig
