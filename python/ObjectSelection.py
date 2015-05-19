@@ -500,10 +500,11 @@ def goodJets_fwd(event, muChannel=True, eleChannel=True, pt=30., jets="jets"):
    
 def getMet(event,type="PF"):
   """Return the MET value you are interested in (type can be PF, MVA or NoPU)"""
+ #FIXME return always the same MET!! 
   return{
 	'PF':event.MET[0],
-	'MVA':event.MVAMET[0],
-	'NoPU':event.NoPUMET[0],
+	'MVA':event.MET[0],
+	'NoPU':event.MET[0],
 	}[type]
 
 def isMetHigherThan(met,cut=20):
