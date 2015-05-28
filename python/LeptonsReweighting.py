@@ -1,9 +1,9 @@
-from PatAnalysis.EventSelection import categoryName
+from EventSelection import categoryName
 from math import sqrt
 import pickle
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 ##______General functions______

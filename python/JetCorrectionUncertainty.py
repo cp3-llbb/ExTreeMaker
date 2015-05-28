@@ -1,6 +1,5 @@
 import os
 import ROOT
-# import PatAnalysis.CMSSW
 from math import sqrt
 from random import gauss
 confCfg = os.environ["PatAnalysisCfg"]

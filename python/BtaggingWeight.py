@@ -1,12 +1,11 @@
 # we use the class from Andrea, with an additional method to add jets to the "event"
 # that class also fills automatically the efficiency and SF.
 import ROOT
-import PatAnalysis.CMSSW
-from PatAnalysis.EventSelection import categoryName
+from EventSelection import categoryName
 from ObjectSelection import isBJet
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 class BtaggingWeight:
@@ -97,7 +96,8 @@ class BtaggingWeight:
           #if jet.pt() > 100. : print "WARNING : "+btagging+self.WP[1]+" tagged jet with no flavor and high transverse energy : ", jet.pt(), ", eta : ", jet.eta()
           ntagsNoFlvavorHE += 1
       # add to the jetset class
-      self.myJetSet.addJet(configuration.SF_uncert, flavor,jet.pt(),jet.eta(), self.algo1, self.algo2)
+      # fixme: crash (none of the 2 overloaded methods succeeded.)
+      # self.myJetSet.addJet(configuration.SF_uncert, flavor,jet.pt(),jet.eta(), self.algo1, self.algo2)
     #if ntagsNoFlvavorHP>=2 and ntagsNoFlvavorHE<2: print "IMPORTANT WARNING : 2 "+btagging+self.WP[0]+" tagged jets with no flavour !! Event should be checked !! Event number : ", event.event()
     #if ntagsNoFlvavorHE>=2 : print "IMPORTANT WARNING : 2 "+btagging+self.WP[1]+" tagged jets with no flavour !! Event should be checked !! Event number : ", event.event()
     return max(self.getWeight(self.myJetSet,ntagsHE,ntagsHP),0.)

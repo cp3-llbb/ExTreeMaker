@@ -1,11 +1,11 @@
 import ROOT
 import array
 from math import sqrt, pi
-from PatAnalysis.BaseControlPlots import BaseControlPlots
-from PatAnalysis.EventSelection import *
+from BaseControlPlots import BaseControlPlots
+from EventSelection import *
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 class MatrixElementControlPlots(BaseControlPlots):

@@ -174,13 +174,15 @@ def eventCategoryChannel(event, muChannel=True, eleChannel=True, btagging="CSV",
     b1 = ROOT.TLorentzVector(dijet[0].px(),dijet[0].py(),dijet[0].pz(),dijet[0].energy())
     b2 = ROOT.TLorentzVector(dijet[1].px(),dijet[1].py(),dijet[1].pz(),dijet[1].energy())
     output.append(b1.DeltaR(b2))
-    if dijet[0].tagInfoSecondaryVertex("secondaryVertex").nVertices()>0 and dijet[1].tagInfoSecondaryVertex("secondaryVertex").nVertices()>0:
-      b1SVvec = dijet[0].tagInfoSecondaryVertex("secondaryVertex").flightDirection(0)
-      b1SV = ROOT.TVector3(b1SVvec.x(),b1SVvec.y(),b1SVvec.z())
-      b2SVvec = dijet[1].tagInfoSecondaryVertex("secondaryVertex").flightDirection(0)
-      b2SV = ROOT.TVector3(b2SVvec.x(),b2SVvec.y(),b2SVvec.z())
-      output.append(b1SV.DeltaR(b2SV))
-    else:
-      output.append(-1)
+    # fixme: ReferenceError: attempt to access a null-pointer
+    # if dijet[0].tagInfoSecondaryVertex("secondaryVertex").nVertices()>0 and dijet[1].tagInfoSecondaryVertex("secondaryVertex").nVertices()>0:
+    #   b1SVvec = dijet[0].tagInfoSecondaryVertex("secondaryVertex").flightDirection(0)
+    #   b1SV = ROOT.TVector3(b1SVvec.x(),b1SVvec.y(),b1SVvec.z())
+    #   b2SVvec = dijet[1].tagInfoSecondaryVertex("secondaryVertex").flightDirection(0)
+    #   b2SV = ROOT.TVector3(b2SVvec.x(),b2SVvec.y(),b2SVvec.z())
+    #   output.append(b1SV.DeltaR(b2SV))
+    # else:
+    #   output.append(-1)
+  output.append(-1)
   # return the list of results
   return output

@@ -1,5 +1,4 @@
 import ROOT
-import PatAnalysis.CMSSW
 
 class LumiReWeighting:
    """A class to reweight MC according to number of pileup events."""

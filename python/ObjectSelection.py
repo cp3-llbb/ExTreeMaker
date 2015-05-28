@@ -390,7 +390,7 @@ def isGoodElectron(electron,role, pt_lep=0.0):
   print "Warning: Unknown electron role:",role
   return True
 
-def hasNoOverlap(jet, lepPair = None):
+def hasNoOverlap(jet, lepPair = None, Z = None):
   """check overlap between jets and leptons"""
 
   #If lepPair is given, it checks the overlap of the jet with the pair of leptons

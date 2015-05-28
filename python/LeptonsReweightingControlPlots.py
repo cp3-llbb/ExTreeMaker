@@ -1,5 +1,5 @@
 import ROOT
-from PatAnalysis.BaseControlPlots import BaseControlPlots
+from BaseControlPlots import BaseControlPlots
 
 class LeptonsReweightingControlPlots(BaseControlPlots):
     """A class to create control plots for lumi reweighting"""

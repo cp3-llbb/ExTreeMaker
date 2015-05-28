@@ -1,4 +1,4 @@
-from PatAnalysis.BaseControlPlots import BaseControlPlots
+from BaseControlPlots import BaseControlPlots
 from MonteCarloSelection import isZbbEvent, isZbcEvent, isZblEvent, isZccEvent, isZclEvent, isZlEvent, LHEinfo
 
 class MonteCarloSelectionControlPlots(BaseControlPlots):
@@ -220,17 +220,18 @@ class genMetsControlPlots(BaseControlPlots):
     def process(self,event):
       """Generator Level Mets"""
       result = { }
-      result["genMET_Pt"] = event.genMET[0].pt()
-      result["genMET_Phi"] = event.genMET[0].phi()
-      result["genMET_Px"] = event.genMET[0].px()
-      result["genMET_Py"] = event.genMET[0].py()
+      #fixme: not working in miniAOD
+      # result["genMET_Pt"] = event.genMET[0].pt()
+      # result["genMET_Phi"] = event.genMET[0].phi()
+      # result["genMET_Px"] = event.genMET[0].px()
+      # result["genMET_Py"] = event.genMET[0].py()
       
-      neutrinos_4v = event.MEMET_4v
-      result["MEMET_Pt"]=neutrinos_4v.Pt()
-      result["MEMET_Phi"]=neutrinos_4v.Phi()
-      result["MEMET_Px"]=neutrinos_4v.Px()
-      result["MEMET_Py"]=neutrinos_4v.Py()
-      result["MEMET_NumberOfNeutrinos"]=event.NumberOfNeutrinos
+      # neutrinos_4v = event.MEMET_4v
+      # result["MEMET_Pt"]=neutrinos_4v.Pt()
+      # result["MEMET_Phi"]=neutrinos_4v.Phi()
+      # result["MEMET_Px"]=neutrinos_4v.Px()
+      # result["MEMET_Py"]=neutrinos_4v.Py()
+      # result["MEMET_NumberOfNeutrinos"]=event.NumberOfNeutrinos
       return result
 
 

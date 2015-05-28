@@ -109,7 +109,7 @@ class configuration:
                        eventProducer("isINCTriggerOK", "ObjectSelection", "isTriggerIncOK", {"perRun":True } ),
                        eventProducer("isTriggerOK", "ObjectSelection", "isTriggerOK", { "muChannel":True,"eleChannel":True,"perRun":True } ),
 		       eventProducer("isHambDiMuTriggerOK", "ObjectSelection", "isTriggerHambOK", {"perRun":True } ),
-                       eventProducer("category", "PatAnalysis.EventSelection", "eventCategory", { "btagging":btagging, "WP":WP, "ZjetFilter":theZfilter } ),
+                       eventProducer("category", "EventSelection", "eventCategory", { "btagging":btagging, "WP":WP, "ZjetFilter":theZfilter } ),
                        eventProducer("bestZmumuCandidate", "ObjectSelection", "findBestCandidate", { "muChannel":True,"eleChannel":False } ),
                        eventProducer("bestZelelCandidate", "ObjectSelection", "findBestCandidate", { "muChannel":False,"eleChannel":True } ),
                        eventProducer("bestZcandidate", "ObjectSelection", "findBestCandidate", { "muChannel":True,"eleChannel":True } ),

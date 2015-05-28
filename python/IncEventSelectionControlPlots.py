@@ -1,11 +1,11 @@
 import ROOT
 import array
-from PatAnalysis.BaseControlPlots import BaseControlPlots
+from BaseControlPlots import BaseControlPlots
 from ObjectSelection import *
 from JetCorrectionUncertainty import JetCorrectionUncertaintyProxy
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 class IncEventSelectionControlPlots(BaseControlPlots):
@@ -130,7 +130,9 @@ class IncEventSelectionControlPlots(BaseControlPlots):
       result["triggerSelection"] = checkTrigger==False or event.isTriggerOK 
       #result["triggerBits"] = [index for index,trigger in enumerate(selectedTriggers(event.triggerInfo)) if trigger==1]
       triggerList = []
-      paths = event.triggerInfo.acceptedPaths()
+      #fixme: not working in miniAOD, exit now
+      # paths = event.triggerInfo.acceptedPaths()
+      return result
 
       triggers = []
       SingleTrig = 0
@@ -465,10 +467,10 @@ class IncJetControlPlots(BaseControlPlots):
 		  	  result["bjet"+str(nb)+"Phf"] = jet.photonEnergyFraction()
 		  	  result["bjet"+str(nb)+"Elf"] = jet.electronEnergyFraction()
 		  	  result["bjet"+str(nb)+"Muf"] = jet.muonEnergyFraction()
-		  	  result["bjet"+str(nb)+"PtD"] = jetPtD(jet)
-		        result["bjet"+str(nb)+"Vtx3dL"] = jetVtx3dL(jet)
-		        result["bjet"+str(nb)+"Vtx3deL"] = jetVtx3deL(jet)
-		        result["bjet"+str(nb)+"VtxPt"] = jetVtxPt(jet)
+		  	  # result["bjet"+str(nb)+"PtD"] = jetPtD(jet) #fixme: not working in miniAOD
+                # result["bjet"+str(nb)+"Vtx3dL"] = jetVtx3dL(jet)
+                # result["bjet"+str(nb)+"Vtx3deL"] = jetVtx3deL(jet)
+                # result["bjet"+str(nb)+"VtxPt"] = jetVtxPt(jet)
 		        result["bjet"+str(nb)+"SSVHEdisc"] = jet.bDiscriminator("simpleSecondaryVertexHighEffBJetTags")
 		        result["bjet"+str(nb)+"SSVHPdisc"] = jet.bDiscriminator("simpleSecondaryVertexHighPurBJetTags")
 		        bjetsvmass=-1
@@ -519,10 +521,10 @@ class IncJetControlPlots(BaseControlPlots):
 			            result["jet"+str(nj)+"Phf"] = jet.photonEnergyFraction()
 			            result["jet"+str(nj)+"Elf"] = jet.electronEnergyFraction()
 			            result["jet"+str(nj)+"Muf"] = jet.muonEnergyFraction()
-			            result["jet"+str(nj)+"PtD"] = jetPtD(jet)
-			        result["jet"+str(nj)+"Vtx3dL"] = jetVtx3dL(jet)
-			        result["jet"+str(nj)+"Vtx3deL"] = jetVtx3deL(jet)
-			        result["jet"+str(nj)+"VtxPt"] = jetVtxPt(jet)
+			            # result["jet"+str(nj)+"PtD"] = jetPtD(jet) #fixme: not working in miniAOD
+			        # result["jet"+str(nj)+"Vtx3dL"] = jetVtx3dL(jet)
+			        # result["jet"+str(nj)+"Vtx3deL"] = jetVtx3deL(jet)
+			        # result["jet"+str(nj)+"VtxPt"] = jetVtxPt(jet)
 			        result["jet"+str(nj)+"SSVHEdisc"] = jet.bDiscriminator("simpleSecondaryVertexHighEffBJetTags")
 			        result["jet"+str(nj)+"SSVHPdisc"] = jet.bDiscriminator("simpleSecondaryVertexHighPurBJetTags")
 				tISV = jet.tagInfoSecondaryVertex("secondaryVertex")

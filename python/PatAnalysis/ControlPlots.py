@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 
-print "plaf"
-
-# import pydevd
-# pydevd.settrace('localhost', port=47693, stdoutToServer=True, stderrToServer=True)
-# pydevd.settrace('ingrid-ui1.cism.ucl.ac.be', port=22, stdoutToServer=True, stderrToServer=True)
-# import sys
-# sys.path.append('/home/fynu/obondu/Higgs/CMSSW_7_4_0_pre9/src/cp3-llbb/ExTreeMaker/python')
-
 #######################################################################################
 ###  Option parsing and main routine  #################################################
 #######################################################################################
@@ -138,15 +130,15 @@ def runAnalysis(path, levels, outputname="controlPlots.root", Njobs=1, jobNumber
     for levelDir in leafList:
       levelPlots=[]
       for cp in configuration.controlPlots:
-          mod= __import__(configuration.pythonpath+cp.module)
-          atts=(configuration.pythonpath+cp.module).split(".")[1:]
+          mod= __import__(cp.module)
+          atts=(cp.module).split(".")[1:]
           for att in atts : mod = getattr(mod,att)
           levelPlots.append(getattr(mod,cp.classname)(dir=levelDir.mkdir(cp.label),mode="plots"))
       controlPlots.append(levelPlots)
   else:
     for cp in configuration.controlPlots:
-        mod= __import__(configuration.pythonpath+cp.module)
-        atts=(configuration.pythonpath+cp.module).split(".")[1:]
+        mod= __import__(cp.module)
+        atts=(cp.module).split(".")[1:]
         for att in atts : mod = getattr(mod,att)
         controlPlots.append(getattr(mod,cp.classname)(dir=None, purpose=cp.label, mode="dataset", dataset=rds))
 

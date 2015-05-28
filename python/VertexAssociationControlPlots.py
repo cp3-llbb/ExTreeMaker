@@ -1,4 +1,4 @@
-from PatAnalysis.BaseControlPlots import BaseControlPlots
+from BaseControlPlots import BaseControlPlots
 from VertexAssociation import *
 
 class VertexAssociationControlPlots(BaseControlPlots):
@@ -36,7 +36,9 @@ class VertexAssociationControlPlots(BaseControlPlots):
       result["vyerr"] = vertex.yError()
       result["vzerr"] = vertex.zError()
       # relevant quantities to monitor: Z vs primary vertex
-      bestZ = event.bestZcandidate
+      #fixme not working with miniAOD
+      # bestZ = event.bestZcandidate
+      bestZ = None
       if bestZ is None: return result
       lepton1 = bestZ.daughter(0)
       lepton2 = bestZ.daughter(1)

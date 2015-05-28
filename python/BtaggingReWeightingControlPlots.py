@@ -1,6 +1,6 @@
 import ROOT
-from PatAnalysis.BaseControlPlots import BaseControlPlots
-import PatAnalysis.EventSelection
+from BaseControlPlots import BaseControlPlots
+import EventSelection
 
 class BtaggingReWeightingControlPlots(BaseControlPlots):
     """A class to create control plots for lumi reweighting"""
@@ -13,12 +13,12 @@ class BtaggingReWeightingControlPlots(BaseControlPlots):
       self._btagging = btagging
       self.WP = WP
       self.map = {}
-      for cat in PatAnalysis.EventSelection.categoryNames:
+      for cat in EventSelection.categoryNames:
           wpcat = "CA8"*cat.count("CA8")+"Subjets"*cat.count("Subjets")+"subjets"*cat.count("subjets")+WP[1]*cat.count("HE")+WP[0]*cat.count("HP")
           if wpcat == "" : continue
           if len(wpcat) <= 2 : wpcat = "AK5"+wpcat
           if wpcat in self.map : continue
-          self.map[wpcat] = PatAnalysis.EventSelection.categoryNames.index(cat)
+          self.map[wpcat] = EventSelection.categoryNames.index(cat)
           self.add(wpcat,wpcat,200,0,2)
       # declare histograms
       self.add(WP[1],WP[1],200,0,2)
