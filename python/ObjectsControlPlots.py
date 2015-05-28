@@ -65,8 +65,9 @@ class MuonsControlPlots(BaseControlPlots):
             photonIso = muon.pfIsolationR04().sumPhotonEt
 
             RelativeIsolationDBetaCorr = (
-                                         chargedHadronIso + max(photonIso + neutralHadronIso - 0.5 * chargedHadronIsoPU,
-                                                                0.)) / (max(0.5, muon.pt()))
+                                             chargedHadronIso + max(
+                                                 photonIso + neutralHadronIso - 0.5 * chargedHadronIsoPU,
+                                                 0.)) / (max(0.5, muon.pt()))
 
             result["muonType"].append(muon.isGlobalMuon() + 2 * muon.isTrackerMuon())
             if muon.isTrackerMuon():
@@ -728,49 +729,49 @@ class MetControlPlots(BaseControlPlots):
     def process(self, event):
         """MetControlPlots"""
         result = {}
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMETNoCorr_Pt"] = event.PFMETNoCorr[0].pt()
         # result["PFMETNoCorr_Phi"] = event.PFMETNoCorr[0].phi()
         # result["PFMETNoCorr_Px"] = event.PFMETNoCorr[0].px()
         # result["PFMETNoCorr_Py"] = event.PFMETNoCorr[0].py()
         # result["PFMETNoCorr_Significance"] = event.PFMETNoCorr[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMET01Phi_Pt"] = event.PFMET01Phi[0].pt()
         # result["PFMET01Phi_Phi"] = event.PFMET01Phi[0].phi()
         # result["PFMET01Phi_Px"] = event.PFMET01Phi[0].px()
         # result["PFMET01Phi_Py"] = event.PFMET01Phi[0].py()
         # result["PFMET01Phi_Significance"] = event.PFMET01Phi[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMET01_Pt"] = event.PFMET01[0].pt()
         # result["PFMET01_Phi"] = event.PFMET01[0].phi()
         # result["PFMET01_Px"] = event.PFMET01[0].px()
         # result["PFMET01_Py"] = event.PFMET01[0].py()
         # result["PFMET01_Significance"] = event.PFMET01[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMET1_Pt"] = event.PFMET1[0].pt()
         # result["PFMET1_Phi"] = event.PFMET1[0].phi()
         # result["PFMET1_Px"] = event.PFMET1[0].px()
         # result["PFMET1_Py"] = event.PFMET1[0].py()
         # result["PFMET1_Significance"] = event.PFMET1[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMETPhi_Pt"] = event.PFMETPhi[0].pt()
         # result["PFMETPhi_Phi"] = event.PFMETPhi[0].phi()
         # result["PFMETPhi_Px"] = event.PFMETPhi[0].px()
         # result["PFMETPhi_Py"] = event.PFMETPhi[0].py()
         # result["PFMETPhi_Significance"] = event.PFMETPhi[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["PFMET1Phi_Pt"] = event.PFMET1Phi[0].pt()
         # result["PFMET1Phi_Phi"] = event.PFMET1Phi[0].phi()
         # result["PFMET1Phi_Px"] = event.PFMET1Phi[0].px()
         # result["PFMET1Phi_Py"] = event.PFMET1Phi[0].py()
         # result["PFMET1Phi_Significance"] = event.PFMET1Phi[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["MVAMET_Pt"] = event.MVAMET[0].pt()
         # result["MVAMET_Phi"] = event.MVAMET[0].phi()
         # result["MVAMET_Px"] = event.MVAMET[0].px()
         # result["MVAMET_Py"] = event.MVAMET[0].py()
         # result["MVAMET_Significance"] = event.MVAMET[0].significance()
-#fixme: crashing with miniAOD
+        # fixme: crashing with miniAOD
         # result["NoPUMET_Pt"] = event.NoPUMET[0].pt()
         # result["NoPUMET_Phi"] = event.NoPUMET[0].phi()
         # result["NoPUMET_Px"] = event.NoPUMET[0].px()

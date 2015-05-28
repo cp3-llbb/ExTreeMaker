@@ -4,6 +4,7 @@
 from bisect import bisect_left, bisect_right
 from itertools import izip
 
+
 class intervalmap(object):
     """
         This class maps a set of intervals to a set of values.
@@ -58,44 +59,44 @@ class intervalmap(object):
         self._items = []
         self._upperitem = None
 
-    def __setitem__(self,_slice,_value):
+    def __setitem__(self, _slice, _value):
         """
             Sets an interval mapping.
         """
-        assert isinstance(_slice,slice), 'The key must be a slice object'
+        assert isinstance(_slice, slice), 'The key must be a slice object'
 
         if _slice.start is None:
             start_point = -1
         else:
-            start_point = bisect_left(self._bounds,_slice.start)
+            start_point = bisect_left(self._bounds, _slice.start)
 
         if _slice.stop is None:
             end_point = -1
         else:
-            end_point = bisect_left(self._bounds,_slice.stop)
+            end_point = bisect_left(self._bounds, _slice.stop)
 
-        if start_point>=0:
-            if start_point < len(self._bounds) and self._bounds[start_point]<_slice.start:
+        if start_point >= 0:
+            if start_point < len(self._bounds) and self._bounds[start_point] < _slice.start:
                 start_point += 1
 
-            if end_point >= 0 and end_point < len(self._bounds) and self._bounds[end_point]<=_slice.stop:
+            if end_point >= 0 and end_point < len(self._bounds) and self._bounds[end_point] <= _slice.stop:
                 end_point += 1
 
-            if end_point>=0:
-                self._bounds[start_point:end_point] = [_slice.start,_slice.stop]
+            if end_point >= 0:
+                self._bounds[start_point:end_point] = [_slice.start, _slice.stop]
                 if start_point < len(self._items):
-                    self._items[start_point:end_point] = [self._items[start_point],_value]
+                    self._items[start_point:end_point] = [self._items[start_point], _value]
                 else:
-                    self._items[start_point:end_point] = [self._upperitem,_value]
+                    self._items[start_point:end_point] = [self._upperitem, _value]
             else:
                 self._bounds[start_point:] = [_slice.start]
                 if start_point < len(self._items):
-                    self._items[start_point:] = [self._items[start_point],_value]
+                    self._items[start_point:] = [self._items[start_point], _value]
                 else:
                     self._items[start_point:] = [self._upperitem]
                 self._upperitem = _value
         else:
-            if end_point>=0:
+            if end_point >= 0:
                 self._bounds[:end_point] = [_slice.stop]
                 self._items[:end_point] = [_value]
             else:
@@ -105,16 +106,16 @@ class intervalmap(object):
         self._optimize()
 
     def __delitem__(self, _slice):
-        assert isinstance(_slice,slice), 'The key must be a slice object'
+        assert isinstance(_slice, slice), 'The key must be a slice object'
         self.__setitem__(_slice, None)
 
-    def __getitem__(self,_point):
+    def __getitem__(self, _point):
         """
             Gets a value from the mapping.
         """
-        assert not isinstance(_point,slice), 'The key cannot be a slice object'
+        assert not isinstance(_point, slice), 'The key cannot be a slice object'
 
-        index = bisect_right(self._bounds,_point)
+        index = bisect_right(self._bounds, _point)
         if index < len(self._bounds):
             return self._items[index]
         else:
@@ -122,9 +123,9 @@ class intervalmap(object):
 
     def _optimize(self):
         i = 0
-        while i < len(self._items)-1:
-            if self._items[i] == self._items[i+1]:
-                #del items[i]
+        while i < len(self._items) - 1:
+            if self._items[i] == self._items[i + 1]:
+                # del items[i]
                 del self._items[i]
                 del self._bounds[i]
             else:
@@ -149,8 +150,8 @@ class intervalmap(object):
 
     def shrink(self):
         i = 0
-        while i < len(self._items)-1:
-            if self._items[i] is not None and self._items[i+1] is not None:
+        while i < len(self._items) - 1:
+            if self._items[i] is not None and self._items[i + 1] is not None:
                 del self._items[i]
                 del self._bounds[i]
             else:
@@ -163,12 +164,12 @@ class intervalmap(object):
             in order.
         """
         previous_bound = None
-        for b,v in izip(self._bounds,self._items):
+        for b, v in izip(self._bounds, self._items):
             if v is not None:
-                yield (previous_bound,b), v
+                yield (previous_bound, b), v
             previous_bound = b
         if self._upperitem is not None:
-            yield (previous_bound,None), self._upperitem
+            yield (previous_bound, None), self._upperitem
 
     def values(self):
         """
@@ -183,14 +184,14 @@ class intervalmap(object):
 
     def __repr__(self):
         s = []
-        for b,v in self.items():
+        for b, v in self.items():
             if v is not None:
-                s.append('[%r, %r] => %r'%(
+                s.append('[%r, %r] => %r' % (
                     b[0],
                     b[1],
                     v
                 ))
-        return '{'+', '.join(s)+'}'
+        return '{' + ', '.join(s) + '}'
 
 
 if __name__ == "__main__":
@@ -204,13 +205,17 @@ if __name__ == "__main__":
     i[8:10] = "(Test)"
     assert repr(i) == "{[None, 5] => 'Hello', [6, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
     i[:3] = 'My,'
-    assert repr(i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [6, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
+    assert repr(
+        i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [6, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
     i[5.5:6] = "Cruel"
-    assert repr(i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 6] => 'Cruel', [6, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
+    assert repr(
+        i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 6] => 'Cruel', [6, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
     i[6:6.5] = "And Harsh"
-    assert repr(i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 6] => 'Cruel', [6, 6.5] => 'And Harsh', [6.5, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
+    assert repr(
+        i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 6] => 'Cruel', [6, 6.5] => 'And Harsh', [6.5, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
     i[5.9:6.6] = None
-    assert repr(i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 5.9000000000000004] => 'Cruel', [6.5999999999999996, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
+    assert repr(
+        i) == "{[None, 3] => 'My,', [3, 5] => 'Hello', [5.5, 5.9000000000000004] => 'Cruel', [6.5999999999999996, 7] => 'World', [8, 10] => '(Test)', [10, None] => '!'}"
     assert ' '.join(i.values()) == "My, Hello Cruel World (Test) !"
     print 'Test 1 OK'
 
@@ -242,18 +247,18 @@ if __name__ == "__main__":
         print 'Test 3 skipped'
     else:
         i = intervalmap()
-        i[:datetime(2005,10,24)] = 'A'
-        i[datetime(2005,11,11):datetime(2005,11,17)] = 'B'
-        i[datetime(2005,11,30):] = 'C'
-        assert i[datetime(2005,9,25)] == 'A'
-        assert i[datetime(2005,10,23)] == 'A'
-        assert i[datetime(2005,10,26)] == None
-        assert i[datetime(2005,11,9)] == None
-        assert i[datetime(2005,11,16)] == 'B'
-        assert i[datetime(2005,11,23)] == None
-        assert i[datetime(2005,11,29)] == None
-        assert i[datetime(2005,11,30)] == 'C'
-        assert i[datetime(2005,12,3)] == 'C'
+        i[:datetime(2005, 10, 24)] = 'A'
+        i[datetime(2005, 11, 11):datetime(2005, 11, 17)] = 'B'
+        i[datetime(2005, 11, 30):] = 'C'
+        assert i[datetime(2005, 9, 25)] == 'A'
+        assert i[datetime(2005, 10, 23)] == 'A'
+        assert i[datetime(2005, 10, 26)] == None
+        assert i[datetime(2005, 11, 9)] == None
+        assert i[datetime(2005, 11, 16)] == 'B'
+        assert i[datetime(2005, 11, 23)] == None
+        assert i[datetime(2005, 11, 29)] == None
+        assert i[datetime(2005, 11, 30)] == 'C'
+        assert i[datetime(2005, 12, 3)] == 'C'
         print 'Test 3 OK'
 
     try:

@@ -3,8 +3,8 @@
 # Note that weight classes do not have to derive from BaseWeightClass.
 
 class BaseWeightClass:
-  """A class to reweight AnalysisEvents"""
-  def weight( self, event):
-     """Lepton eff weight"""
-     raise NotImplementedError
+    """A class to reweight AnalysisEvents"""
 
+    def weight(self, event):
+        """Lepton eff weight"""
+        raise NotImplementedError
