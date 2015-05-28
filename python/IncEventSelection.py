@@ -3,7 +3,7 @@ import MonteCarloSelection
 from ObjectSelection import *
 import os
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 #########################################################################

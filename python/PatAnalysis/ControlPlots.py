@@ -1,7 +1,9 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
+
+print "plaf"
 
 # import pydevd
-# pydevd.settrace('localhost', port=$SERVER_PORT, stdoutToServer=True, stderrToServer=True)
+# pydevd.settrace('localhost', port=47693, stdoutToServer=True, stderrToServer=True)
 # pydevd.settrace('ingrid-ui1.cism.ucl.ac.be', port=22, stdoutToServer=True, stderrToServer=True)
 # import sys
 # sys.path.append('/home/fynu/obondu/Higgs/CMSSW_7_4_0_pre9/src/cp3-llbb/ExTreeMaker/python')
@@ -48,14 +50,14 @@ from CPconfig import configuration, printConfig
 if options.outputname is None:
   options.outputname = configuration.defaultFilename+".root"
 
-import CMSSW
+#import CMSSW
 import ROOT
 import itertools
 import time
 from AnalysisEvent import AnalysisEvent
 from BaseControlPlots import getArgSet
 import EventSelection
-import cProfile
+#import cProfile
 
 #Print configuration
 printConfig(configuration)

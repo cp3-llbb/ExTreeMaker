@@ -1,10 +1,10 @@
 import os
 import ROOT
-import PatAnalysis.CMSSW
+# import PatAnalysis.CMSSW
 from math import sqrt
 from random import gauss
 confCfg = os.environ["PatAnalysisCfg"]
-if confCfg : from PatAnalysis.CPconfig import configuration
+if confCfg : from CPconfig import configuration
 else : from zbbConfig import configuration
 
 class JetCorrectionUncertaintyProxy:

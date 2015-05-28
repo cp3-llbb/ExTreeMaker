@@ -57,8 +57,9 @@ def prepareAnalysisEvent(event):
   for coll in configuration.eventCollections:
     event.addCollection(coll.label,coll.handle,coll.collection)
   for prod in configuration.eventProducers:
-    mod = __import__(configuration.pythonpath+prod.module)
-    atts=(configuration.pythonpath+prod.module).split(".")[1:]
+    # print prod.module
+    mod = __import__(prod.module)
+    atts=(prod.module).split(".")[1:]
     for att in atts : mod = getattr(mod,att)
     event.addProducer(prod.label,getattr(mod,prod.function),**prod.kwargs)
   for weight in configuration.eventWeights:

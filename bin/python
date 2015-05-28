@@ -1,0 +1,10 @@
+#!/bin/sh
+#cd /nfs/home/fynu/obondu/Higgs/CMSSW_7_4_0_pre9/src/cp3-llbb/ExTreeMaker
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+'cd' /nfs/home/fynu/obondu/Higgs/CMSSW_7_4_0_pre9/src/cp3-llbb/ExTreeMaker
+#pwd
+eval `/cvmfs/cms.cern.ch/common/scramv1 ru -sh`
+#pwd
+'cd' -
+export PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
+python $@

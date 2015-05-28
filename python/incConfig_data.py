@@ -8,7 +8,7 @@ changeJetPt(conf = configuration, ptjet=20)
 class configuration(configuration):
 
   #config file used
-  eventSelection = configuration.pythonpath+"IncEventSelection"
+  eventSelection = "IncEventSelection"
 
   # mode: plots or dataset
   runningMode = "plots"
