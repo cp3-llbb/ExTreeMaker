@@ -69,6 +69,10 @@ def prepareAnalysisEvent(event):
         for att in atts: mod = getattr(mod, att)
         event.addProducer(prod.label, getattr(mod, prod.function), **prod.kwargs)
     for weight in configuration.eventWeights:
+        #fixme removing processing of BTagWeights with miniAOD
+        print weight, weight.label, weight.classname
+        if weight.label is "Btagging":
+            continue
         mod = __import__(weight.module)
         atts = (weight.module).split(".")[1:]
         for att in atts: mod = getattr(mod, att)

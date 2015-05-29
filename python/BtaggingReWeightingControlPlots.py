@@ -47,6 +47,7 @@ class BtaggingReWeightingControlPlots(BaseControlPlots):
     def process(self, event):
         """BtaggingReWeightingControlPlots"""
         result = {}
+        return result # fixme: exit now!
         for wpcat in self.map:
             result[wpcat] = event.weight(weightList=["Btagging"], category=self.map[wpcat], btagging=self._btagging)
         result[self.WP[1]] = event.weight(weightList=["Btagging"], forceMode=self.WP[1], btagging=self._btagging)

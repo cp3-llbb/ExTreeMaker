@@ -727,6 +727,7 @@ class LeptonsReWeighting:
 
     def weight(self, fwevent=None, electrons=None, muons=None, category=None, forceMode=None):
         """Lepton eff weight"""
+        return 1 #fixme: render this dumb for miniAOD
         # if fwevent is defined, get electrons and muons from there
         if not (fwevent is None):
             # sanity check

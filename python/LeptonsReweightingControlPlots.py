@@ -28,8 +28,9 @@ class LeptonsReweightingControlPlots(BaseControlPlots):
             result["weight"] = event.weight(weightList=["Leptons"], forceMode="Electron")
         elif self._muChannel == True:
             result["weight"] = event.weight(weightList=["Leptons"], forceMode="Muon")
-        result["weight_OneExtraLep"] = event.weight(weightList=["Leptons"], forceMode="3lep")
-        result["weight_TwoExtraLep"] = event.weight(weightList=["Leptons"], forceMode="4lep")
+        #fixme : miniaod
+        # result["weight_OneExtraLep"] = event.weight(weightList=["Leptons"], forceMode="3lep")
+        # result["weight_TwoExtraLep"] = event.weight(weightList=["Leptons"], forceMode="4lep")
         return result
 
 
