@@ -1,0 +1,8 @@
+#!/bin/sh
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+# todo: please do not delete the commented 'cd' yet, they still may be needed for pycharm debug mode
+#cd CMSSW_BASE/src/
+eval `/cvmfs/cms.cern.ch/common/scramv1 ru -sh`
+#'cd' -
+export PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
+python $@

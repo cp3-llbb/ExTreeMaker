@@ -3,3 +3,4 @@
 *.pyc
 *.d
 __init__.py
+.idea*
