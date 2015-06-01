@@ -39,6 +39,12 @@ ExTreeMaker
 
 # PyCharm configuration
 
+You need the professional edition of PyCharm. You can request a licence using your UCL mail address here: https://www.jetbrains.com/student
+
+## Project setup
+
+Launch PyCharm. On the welcome screen, choose 'Checkout from Version Control' and select Github. Follow the instructions, and checkout **your** fork of ``ExTreeMaker``.
+
 ## Deployment
 
 This steps indicate to PyCharm how-to copy your local files to ingrid. Go to File > Settings > Build, Execution, Deployment
@@ -52,9 +58,15 @@ On the Connection tab, set:
 * Auth type: if you have an SSH key, you can choose 'Key pair' here, or password otherwise
 * If you chose 'Key pair', fill the 'Private key file' field with the absolute path of your private SSH key, and the 'passphrase' field. If you chose password, fill the password field.
 
-On the Mappings tab, set the 'Deployment path' to the absolute path of the ``ExTreeMaker`` directory inside the CMSSW release. For example, it can be ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3-llbb/ExTreeMaker``
+On the Mappings tab, set the 'Deployment path' to the absolute path of the ``ExTreeMaker`` directory inside the CMSSW release. For example, it can be ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3-llbb/ExTreeMaker``.
+
+Now click on the 'Add another mapping'. For the local path, set the absolute path of the ``ExTreeMaker`` directory. For the deployment path, use the same path as above, but replace ``src`` by ``python`` (for example, ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/python/cp3-llbb/ExTreeMaker``). Set the web path to '/'.
 
 Click on 'Apply' to save your changes.
+
+Now, on the menu on the left, click on 'Options' under 'Deployment'. Set the option 'Upload changed files automatically to the default server' to 'Always'. Click on 'Apply' to save your changes, and 'OK' to close the dialog.
+
+Now you need to do the first upload of the project remotely. On the 'Project' window, right-click on the 'ExTreeMaker' project (top left of the screen), and select 'Upload to ingrid'.
 
 ## Remote python interpreter
 

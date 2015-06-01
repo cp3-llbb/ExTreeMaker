@@ -1,8 +1,17 @@
 #!/bin/sh
+
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-# todo: please do not delete the commented 'cd' yet, they still may be needed for pycharm debug mode
-#cd CMSSW_BASE/src/
+
+# When debugging, PyCharm first execute some python command to open a socket on the remote host.
+# In this step, the working directory is not set. We need to cd into a CMSSW area manually
+
+# Get script directory
+DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+
+pushd $DIR 2&> /dev/null
 eval `/cvmfs/cms.cern.ch/common/scramv1 ru -sh`
-#'cd' -
+popd 2&> /dev/null
+
 export PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
-python $@
+
+python "$@"
