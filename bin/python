@@ -8,9 +8,9 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 # Get script directory
 DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 
-pushd $DIR 2&> /dev/null
+pushd "$DIR" &> /dev/null
 eval `/cvmfs/cms.cern.ch/common/scramv1 ru -sh`
-popd 2&> /dev/null
+popd &> /dev/null
 
 export PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
 
