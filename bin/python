@@ -12,6 +12,12 @@ pushd $DIR 2&> /dev/null
 eval `/cvmfs/cms.cern.ch/common/scramv1 ru -sh`
 popd 2&> /dev/null
 
-export PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
+PYTHONPATH="${PYTHONPATH}:." #TODO: fix this some day
+
+# Remove the CMSSW/lib/ path from $PYTHONPATH. It's not needed for our framework and speed-up (a lot!) the PyCharm parsing process
+PYTHONPATH=${PYTHONPATH//${CMSSW_BASE}\/lib\/${SCRAM_ARCH}:/}
+PYTHONPATH=${PYTHONPATH//${CMSSW_RELEASE_BASE}\/lib\/${SCRAM_ARCH}:/}
+
+export PYTHONPATH
 
 python "$@"
