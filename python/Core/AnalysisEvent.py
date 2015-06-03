@@ -9,7 +9,7 @@ from types import StringTypes
 
 class AnalysisEvent(Events):
     """A class that complements fwlite::Events with analysis facilities.
-       The class provides the following additional functionalities:
+       The class provides the following additional functionality:
          1. instrumentation for event weight
               A set of weight classes can be defined, and the event weight
               is computed and cached using those.
@@ -20,40 +20,33 @@ class AnalysisEvent(Events):
               It allows to run "analysis on demand", by automatically running
               the defined producers to fill the cache, and later use that one.
          4. a volatile dictionary
-              It allows to use the event as an heterogenous container for
+              It allows to use the event as an heterogeneous container for
               any analysis product. The event is properly reset when iterating
               to the next event.
     """
 
-    def __init__(self, inputFiles='', **kwargs):
-        """Initialize the AnalysisEvent like a standard Event, plus additional features."""
-        # initialization of base functionalities
-        Events.__init__(self, inputFiles, **kwargs)
-        # additional features:
-        # 1. instrumentation for event weight
-        self._weightCache = {}
-        self._weightEngines = {}
-        # 2. a list of event products used in the analysis
-        self._collections = {}
-        # 3. a list of "producers" of analysis high-level quantities
-        self._producers = {}
-        # 4. volatile dictionary. User can add any quantity to the event and it will be
-        #    properly erased in the iteration step.
-        self.__dict__["vardict"] = {}
+    def __init__(self, input_files):
+        """
+        Main constructor
+        :param input_files: Either a list of input files or a single file name
+        :return: Nothing
+        """
+        Events.__init__(self, input_files)
 
-    def delWeight(self, name):
-        """Remove one weight engine from the internal list."""
-        # just to clean the dictionnary
-        del self._weightEngines[name]
-        self._weightCache.clear()
+        # additional features:
+        # a list of event products used in the analysis
+        self._collections = {}
+
+        # volatile dictionary. User can add any quantity to the event and it will be
+        #    properly erased in the iteration step.
+
+        self.__dict__["vardict"] = {}
 
     def addCollection(self, name, handle, inputTag):
         """Register an event collection as used by the analysis.
            Example: addCollection("jets","vector<pat::Jet>","cleanPatJets" """
         if name in self._collections:
             raise KeyError("%r collection is already declared", name)
-        if name in self._producers:
-            raise KeyError("%r is already declared as a producer", name)
         if hasattr(self, name):
             raise AttributeError("%r object already has attribute %r" % (type(self).__name__, attr))
         self._collections[name] = {"handle": Handle(handle), "collection": inputTag}
@@ -78,29 +71,6 @@ class AnalysisEvent(Events):
             except:
                 self.vardict[name] = None
         return getattr(self, name)
-
-    def addProducer(self, name, producer, **kwargs):
-        """Register a producer to create new high-level analysis objects."""
-        # sanity checks
-        if name in self._producers:
-            raise KeyError("%r producer is already declared", name)
-        if name in self._collections:
-            raise KeyError("%r is already declared as a collection", name)
-        if hasattr(self, name):
-            raise AttributeError("%r object already has attribute %r" % (type(self).__name__, attr))
-        # remove name and producer from kwargs
-        if "name" in kwargs: del kwargs["name"]
-        if "producer" in kwargs: del kwargs["producer"]
-        # store
-        self._producers[name] = (producer, kwargs)
-
-    def removeProducer(self, name):
-        """Forget about the producer.
-           This method will delete both the product from the cache (if any) and the producer.
-           To simply clear the cache, use "del event.name" instead."""
-        del self._producers[name]
-        if name in self.vardict:
-            delattr(self, name)
 
     def run(self):
         """Run number"""
@@ -145,10 +115,9 @@ class AnalysisEvent(Events):
             self._toBeginCode()
         while not self._event.atEnd():
             self.vardict.clear()  # added
-            self._weightCache.clear()  # added
             yield self
             self._eventCounts += 1
-            if self._maxEvents > 0 and self._eventCounts >= self._maxEvents:
+            if 0 < self._maxEvents <= self._eventCounts:
                 break
             # Have we been asked to go to the first event?
             if self._toBegin:
@@ -170,8 +139,7 @@ class AnalysisEvent(Events):
                 return self.vardict.setdefault(attr, self._collections[attr]["handle"].product())
             except:
                 return self.vardict.setdefault(attr, None)
-        if attr in self._producers:
-            return self.vardict.setdefault(attr, self._producers[attr][0](self, **self._producers[attr][1]))
+
         raise AttributeError("%r object has no attribute %r" % (type(self).__name__, attr))
 
     def __setattr__(self, name, value):
@@ -179,7 +147,7 @@ class AnalysisEvent(Events):
         if name in self.__dict__ or not "vardict" in self.__dict__ or name[0] == '_':
             self.__dict__[name] = value
         else:
-            if name in self._collections or name in self._producers:
+            if name in self._collections:
                 raise AttributeError(
                     "%r object %r attribute is read-only (event collection)" % (type(self).__name__, name))
             self.vardict[name] = value
@@ -229,10 +197,7 @@ class AnalysisEvent(Events):
             except:
                 pass
         mystring += "\n-----------------------------------------------------------------\n"
-        # list the registered producers
-        mystring += "Producers:\n"
-        mystring += dictjoin(self._producers)
-        mystring += "\n-----------------------------------------------------------------\n"
+
         # list the content of vardict, excluding collections
         mystring += "Content of the cache:\n"
         for k, v in self.vardict.iteritems():

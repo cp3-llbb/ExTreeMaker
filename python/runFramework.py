@@ -3,7 +3,9 @@ __author__ = 'sbrochet'
 from pytree import Tree
 from Core.AnalysisEvent import AnalysisEvent
 
-import os, time, itertools
+import os
+import time
+import itertools
 from optparse import OptionParser
 
 usage = """%prog [options]"""
@@ -74,15 +76,16 @@ def runAnalysis(input, outputname="output_mc.root", Njobs=1, jobNumber=1):
     # output tree
     tree = Tree('tree')
 
+    # Collect runnables
+    runnables = analyzer._producers + [analyzer]
+
     # Create branches
     def createBranches(products):
         for product in products:
             tree.set_buffer(product, create_branches=True)
 
-    for producer in analyzer._producers:
-        createBranches(producer._products)
-
-    createBranches(analyzer._products)
+    for runnable in runnables:
+        createBranches(runnable._products)
 
     # events iterator, plus configuration of standard collections and producers
     events = AnalysisEvent(files)
@@ -95,15 +98,12 @@ def runAnalysis(input, outputname="output_mc.root", Njobs=1, jobNumber=1):
         for collection in collections:
             events.addCollection(collection['name'], collection['type'], collection['inputTag'])
 
-    registerCollections(analyzer._collections)
-    for producer in analyzer._producers:
-        registerCollections(producer._collections)
+    for runnable in runnables:
+        registerCollections(runnable._collections)
 
     # Call beginJob
-    for producer in analyzer._producers:
-        producer.beginJob()
-
-    analyzer.beginJob()
+    for runnable in runnables:
+        runnable.beginJob()
 
     # main event loop
     i = 0
@@ -127,10 +127,8 @@ def runAnalysis(input, outputname="output_mc.root", Njobs=1, jobNumber=1):
         i += 1
 
     # Call endJob
-    for producer in analyzer._producers:
-        producer.endJob()
-
-    analyzer.endJob()
+    for runnable in runnables:
+        runnable.endJob()
 
     # Write the tree
     output.Write()
