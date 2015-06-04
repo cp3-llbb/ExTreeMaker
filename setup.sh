@@ -7,7 +7,7 @@ then
   return 1
 fi
 
-cd ${CMSSW_BASE}/src/cp3-llbb/ExTreeMaker
+cd ${CMSSW_BASE}/src/cp3_llbb/ExTreeMaker
 
 git remote add delaere https://github.com/delaere/zbb_louvaini.git
 git remote add BrieucF https://github.com/BrieucF/zbb_louvain.git
