@@ -31,21 +31,20 @@ class Runnable:
         :param inputTag: The edm::InputTag of the collection
         :return:
         """
-        self._collections.append({'name': name, 'type': type, 'inputTag': inputTag})
+        self._collections.append({'name': name, 'type': type, 'input_tag': inputTag})
 
-    def produces(self, clazz, name):
+    def produces(self, clazz, name, prefix):
         """
         Informs the framework that the analyzer will produce an object of type clazz.
         :param clazz: The class of the object produced by this analyzer. Must derived from Model
-        :param name: The name of this object. Tree branches will be prefixed by this name
-        :return: An instance of clazz. Fill this instance with the value you want in the analyze method
+        :param name: The name of this object. Set as an attribute of the global ``products`` objects
+        :param prefix: Tree branches will be prefixed by this value
+        :return:
         """
 
         if not issubclass(clazz, TreeModel):
             raise TypeError()
 
-        instance = clazz.prefix(name)()
+        instance = clazz.prefix(prefix)()
 
-        self._products.append(instance)
-
-        return instance
+        self._products.append({'name': name, 'prefix': prefix, 'instance': instance})

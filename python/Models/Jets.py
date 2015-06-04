@@ -2,5 +2,7 @@ __author__ = 'sbrochet'
 
 from Candidates import Candidates
 
+import ROOT
+
 class Jets(Candidates):
-    pass
+    pu_jet_id = ROOT.vector('float')

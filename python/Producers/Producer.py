@@ -9,5 +9,5 @@ class Producer(Runnable):
 
         self._name = name
 
-    def produce(self, event):
+    def produce(self, event, products):
         raise NotImplementedError()
