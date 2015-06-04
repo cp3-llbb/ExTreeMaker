@@ -6,3 +6,4 @@ import ROOT
 
 class Muons(Candidates):
     isLooseMuon = ROOT.vector('bool')
+    isTightMuon = ROOT.vector('bool')

@@ -16,4 +16,5 @@ class Muons(Producer):
         for muon in event.muons:
             p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(muon.pt(), muon.eta(), muon.phi(), muon.energy())
             products.muons.muon_p4.push_back(p4)
-            products.muons.muon_isLooseMuon.push_back(True)
+            products.muons.muon_isLooseMuon.push_back(muon.isLooseMuon())
+            products.muons.muon_isTightMuon.push_back(muon.isTightMuon(event.vertices[0]))
