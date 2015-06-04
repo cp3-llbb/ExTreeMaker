@@ -14,13 +14,13 @@ ExTreeMaker
  source /nfs/soft/grid/ui_sl6/setup/grid-env.sh
  source /cvmfs/cms.cern.ch/cmsset_default.sh
  export SCRAM_ARCH=slc6_amd64_gcc491
- cmsrel CMSSW_7_4_1
- cd CMSSW_7_4_1/src
+ cmsrel CMSSW_7_4_4
+ cd CMSSW_7_4_4/src
  cmsenv
  git cms-init
  cd ${CMSSW_BASE}/src 
- git clone -o upstream https://github.com/cp3-llbb/ExTreeMaker.git cp3-llbb/ExTreeMaker
- cd cp3-llbb/ExTreeMaker
+ git clone -o upstream https://github.com/cp3-llbb/ExTreeMaker.git cp3_llbb/ExTreeMaker
+ cd cp3_llbb/ExTreeMaker
  git checkout dev_goingMiniAOD
  source setup.sh
  scram b -j 4
@@ -28,8 +28,8 @@ ExTreeMaker
 # Test run (command line)
 
  ```
- cd ${CMSSW_BASE}/src/cp3-llbb/ExTreeMaker/python
- ./../bin/python PatAnalysis/ControlPlots.py -c incConfig --all -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100
+ cd ${CMSSW_BASE}/src/cp3_llbb/ExTreeMaker/python
+ ./../bin/python runFramework.py -c TestConfiguration -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100
  ```
  
 # When willing to commit things
@@ -58,9 +58,9 @@ On the Connection tab, set:
 * Auth type: if you have an SSH key, you can choose 'Key pair' here, or password otherwise
 * If you chose 'Key pair', fill the 'Private key file' field with the absolute path of your private SSH key, and the 'passphrase' field. If you chose password, fill the password field.
 
-On the Mappings tab, set the 'Deployment path' to the absolute path of the ``ExTreeMaker`` directory inside the CMSSW release. For example, it can be ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3-llbb/ExTreeMaker``.
+On the Mappings tab, set the 'Deployment path' to the absolute path of the ``ExTreeMaker`` directory inside the CMSSW release. For example, it can be ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3_llbb/ExTreeMaker``.
 
-Now click on the 'Add another mapping'. For the local path, set the absolute path of the ``ExTreeMaker`` directory. For the deployment path, use the same path as above, but replace ``src`` by ``python`` (for example, ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/python/cp3-llbb/ExTreeMaker``). Set the web path to '/'.
+Now click on the 'Add another mapping'. For the local path, set the absolute path of the ``ExTreeMaker`` directory. For the deployment path, use the same path as above, but replace ``src`` by ``python`` (for example, ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/python/cp3_llbb/ExTreeMaker``). Set the web path to '/'.
 
 Click on 'Apply' to save your changes.
 
@@ -72,14 +72,14 @@ Now you need to do the first upload of the project remotely. On the 'Project' wi
 
 We need to configure PyCharm to use python from CMSSW instead of system-wide python. Go to File > Settings > Project: ExTreeMaker and click on 'Project Interpreter'. Click on the little wheel (top right of the screen), and choose 'Add remote'.
 
-Select 'Deployment configuration', and choose 'ingrid' (or whatever name you used for your deployment configuration). For the 'Python interpreter path', select the ``python`` file located in the ``bin`` folder of the framework. It'll look like ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3-llbb/ExTreeMaker/bin/python``. Click on OK to validate. Make sure that the new python interpreter is selected.
+Select 'Deployment configuration', and choose 'ingrid' (or whatever name you used for your deployment configuration). For the 'Python interpreter path', select the ``python`` file located in the ``bin`` folder of the framework. It'll look like ``/home/fynu/sbrochet/scratch/Framework/CMSSW_7_4_4/src/cp3_llbb/ExTreeMaker/bin/python``. Click on OK to validate. Make sure that the new python interpreter is selected.
 
 ## Run configuration
 
 Final step is to tell PyCharm how-to execute the framework on ingrid. Go to Run > Edit configurations... Click on the green plus button and choose 'Python'. Name your new run configuration as you want (ingrid for example...). In the configuration tab, set:
 
-* Script: click on the '...' button to browse. Select the file 'python/PatAnalysis/ControlPlots.py'
-* Script parameters: ``-c incConfig --all -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100`` will allow you to get started
+* Script: click on the '...' button to browse. Select the file 'python/runFramework.py'
+* Script parameters: ``-c TestConfiguration -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100`` will allow you to get started
 * Python interpreter: choose here your remote interpreter (something like ``sftp://...``)
 * Working directory: Browse and choose the 'python' folder
 
