@@ -3,7 +3,7 @@ from DataFormats.FWLite import Events, Handle
 from FWCore.ParameterSet.Types import InputTag
 from inspect import getargspec
 from datetime import datetime
-from collections import Iterable
+from collections import Iterable, namedtuple
 from types import StringTypes
 
 
@@ -24,6 +24,8 @@ class AnalysisEvent(Events):
               any analysis product. The event is properly reset when iterating
               to the next event.
     """
+
+    Alias = namedtuple("Alias", "to")
 
     def __init__(self, input_files):
         """
@@ -46,9 +48,26 @@ class AnalysisEvent(Events):
         """Register an event collection as used by the analysis.
            Example: addCollection("jets","vector<pat::Jet>","cleanPatJets" """
         if name in self._collections:
-            raise KeyError("%r collection is already declared", name)
+            # Check if handle and inputTag is different before throwing
+            oldC = self._collections[name]
+            if oldC['handle']._type.strip() != handle.strip() or oldC['collection'].strip() != inputTag.strip():
+                raise KeyError("%r collection is already declared as %s:%s" % (name, oldC['handle']._type, oldC['collection']))
+            else:
+                # Collection already exists
+                return
+
         if hasattr(self, name):
-            raise AttributeError("%r object already has attribute %r" % (type(self).__name__, attr))
+            raise AttributeError("%r object already has attribute %r" % (type(self).__name__, name))
+
+        # Look if there's already a collection registered for this handle and inputTag. If there is, consider this
+        # collection as an alias of the other
+        for collectionName, collectionData in self._collections.items():
+            if handle.strip() == collectionData['handle']._type.strip() and \
+                    inputTag.strip() == collectionData['collection'].strip():
+                print("Collection %r set as an alias of collection %r" % (name, collectionName))
+                self._collections[name] = AnalysisEvent.Alias(to=collectionName)
+                return
+
         self._collections[name] = {"handle": Handle(handle), "collection": inputTag}
 
     def removeCollection(self, name):
@@ -58,19 +77,6 @@ class AnalysisEvent(Events):
         del self._collections[name]
         if name in self.vardict:
             delattr(self, name)
-
-    def getCollection(self, name):
-        """Retrieve the event product or return the cached collection.
-           Note that the prefered way to get the collection is instead to access the "event.name" attribute."""
-        if not name in self._collections:
-            raise AttributeError("%r object has no attribute %r" % name)
-        if not name in self.vardict:
-            try:
-                self.getByLabel(self._collections[name]["collection"], self._collections[name]["handle"])
-                self.vardict[name] = self._collections[name]["handle"].product()
-            except:
-                self.vardict[name] = None
-        return getattr(self, name)
 
     def run(self):
         """Run number"""
@@ -134,9 +140,13 @@ class AnalysisEvent(Events):
         if attr in self.__dict__["vardict"]:
             return self.vardict[attr]
         if attr in self._collections:
+            obj = self._collections[attr]
+            if isinstance(obj, AnalysisEvent.Alias):
+                return self.__getattr__(obj.to)
+
             try:
-                self.getByLabel(self._collections[attr]["collection"], self._collections[attr]["handle"])
-                return self.vardict.setdefault(attr, self._collections[attr]["handle"].product())
+                self.getByLabel(obj["collection"], obj["handle"])
+                return self.vardict.setdefault(attr, obj["handle"].product())
             except:
                 return self.vardict.setdefault(attr, None)
 
