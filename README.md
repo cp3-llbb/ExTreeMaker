@@ -84,3 +84,8 @@ Final step is to tell PyCharm how-to execute the framework on ingrid. Go to Run 
 * Working directory: Browse and choose the 'python' folder
 
 That's all. Click on Apply and then OK. You can now run remotely on ingrid. To test, click on the green arrow (top right of the screen). Be sure first to select the right run configuration on the drop-down list on the left of the run button. You should see the output inside the Run window.
+
+## Git setup
+
+Unfortunately there is currently no easy user-friendly way to have several git remotes in pycharm, so we have to setup and update with the upstream manually:
+ * As long as your pycharm project is in a directory containing the string "Pycharm" (the installation default being "PycharmProjects"), just run `source setup.sh` in the pycharm 'Terminal' at the bottom of the screen (should already point you to the correct directory)
