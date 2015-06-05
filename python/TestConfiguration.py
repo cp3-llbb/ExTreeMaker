@@ -14,7 +14,7 @@ class TestConfiguration(Configuration):
     producers = [
         Bunch(alias='vertices', clazz=Vertices, vertex_collection='offlineSlimmedPrimaryVertices'),
         Bunch(alias='jets', clazz=Jets, jet_collection='slimmedJets'),
-        Bunch(alias='muons', clazz=Muons, muon_collection='slimmedMuons')
+        Bunch(alias='muons', clazz=Muons, muon_collection='slimmedMuons', vertex_collection='offlineSlimmedPrimaryVertices')
     ]
 
     collections = [

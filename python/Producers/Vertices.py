@@ -2,7 +2,6 @@ __author__ = 'obondu'
 
 import Models.Vertices
 from Producer import Producer
-# from ROOT.Math import XYZPointF
 
 class Vertices(Producer):
 
@@ -14,6 +13,4 @@ class Vertices(Producer):
 
     def produce(self, event, products):
         for vertex in event.vertices:
-            # p3 = XYZPointF('ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float>>')(0., 0., 0.)
-            # products.vertices.vertex_p3.push_back(p3)
-            products.vertices.vertex_sumpt2.push_back(0.5) #fixme: stupid for now
+            products.vertices.vertex_position.push_back(vertex.position())

@@ -6,10 +6,11 @@ from ROOT.Math import LorentzVector
 
 class Muons(Producer):
 
-    def __init__(self, name, muon_collection):
+    def __init__(self, name, muon_collection, vertex_collection):
         Producer.__init__(self, name)
 
         self.uses('muons', 'std::vector<pat::Muon>', muon_collection)
+        self.uses('vertices', 'std::vector<reco::Vertex>', vertex_collection)
         self.produces(Models.Muons.Muons, 'muons', 'muon_')
 
     def produce(self, event, products):
