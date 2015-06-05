@@ -15,6 +15,7 @@ class TestAnalyzer(Analyzer):
         self.uses('vertices', 'std::vector<reco::Vertex>', kwargs['vertex_collection'])
         self.uses('jets', 'std::vector<pat::Jet>', kwargs['jet_collection'])
         self.uses('muons', 'std::vector<pat::Muon>', kwargs['muon_collection'])
+        self.uses('mets', 'std::vector<pat::MET>', kwargs['met_collection'])
 
     def beginJob(self):
         print("Begin job!")
