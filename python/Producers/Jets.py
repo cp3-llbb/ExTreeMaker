@@ -1,21 +1,23 @@
 __author__ = 'sbrochet'
 
 import Models.Jets
-import random
 from Producer import Producer
-from ROOT.Math import LorentzVector
+
+from Helper import fill_candidate
 
 class Jets(Producer):
 
-    def __init__(self, name, jet_collection):
+    def __init__(self, name, prefix, jet_collection):
         Producer.__init__(self, name)
 
-        self.uses('jets', 'std::vector<pat::Jet>', jet_collection)
-        self.produces(Models.Jets.Jets, 'jets', 'jet_')
+        self.uses(name, 'std::vector<pat::Jet>', jet_collection)
+        self.produces(Models.Jets.Jets, name, prefix)
 
     def produce(self, event, products):
-        for jet in event.jets:
-            p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(jet.pt(), jet.eta(), jet.phi(), jet.energy())
-            products.jets.jet_p4.push_back(p4)
+        jets = getattr(event, self._name)
+        product = getattr(products, self._name)
+        for jet in jets:
+            fill_candidate(jet, product)
 
-            products.jets.pu_jet_id.push_back(random.random())
+            if jet.hasUserFloat('pileupJetId:fullDiscriminant'):
+                product.pu_jet_id.push_back(jet.userFloat('pileupJetId:fullDiscriminant'))
