@@ -5,5 +5,8 @@ from Candidates import Candidates
 import ROOT
 
 class Muons(Candidates):
-    isLooseMuon = ROOT.vector('bool')
-    isTightMuon = ROOT.vector('bool')
+    isLoose = ROOT.vector('bool')
+    isMedium = ROOT.vector('bool')
+    isSoft = ROOT.vector('bool')
+    isTight = ROOT.vector('bool')
+    isHighPt = ROOT.vector('bool')

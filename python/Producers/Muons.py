@@ -14,7 +14,12 @@ class Muons(Producer):
         self.produces(Models.Muons.Muons, 'muons', 'muon_')
 
     def produce(self, event, products):
+        product = products.muons
+        primary_vertex = event.vertices[0]
         for muon in event.muons:
-            fill_candidate(muon, products.muons)
-            products.muons.muon_isLooseMuon.push_back(muon.isLooseMuon())
-            products.muons.muon_isTightMuon.push_back(muon.isTightMuon(event.vertices[0]))
+            fill_candidate(muon, product)
+            product.isLoose.push_back(muon.isLooseMuon())
+            product.isMedium.push_back(muon.isMediumMuon())
+            product.isSoft.push_back(muon.isSoftMuon(primary_vertex))
+            product.isTight.push_back(muon.isTightMuon(primary_vertex))
+            product.isHighPt.push_back(muon.isHighPtMuon(primary_vertex))
