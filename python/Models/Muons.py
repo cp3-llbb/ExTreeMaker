@@ -1,10 +1,10 @@
 __author__ = 'obondu'
 
-from Candidates import Candidates
+from Leptons import Leptons
 
 import ROOT
 
-class Muons(Candidates):
+class Muons(Leptons):
     isLoose = ROOT.vector('bool')
     isMedium = ROOT.vector('bool')
     isSoft = ROOT.vector('bool')

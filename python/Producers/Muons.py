@@ -2,7 +2,7 @@ __author__ = 'obondu'
 
 import Models.Muons
 from Producer import Producer
-from Producers.Helper import fill_candidate
+from Producers.Helper import fill_candidate, fill_isolations
 
 class Muons(Producer):
 
@@ -24,3 +24,11 @@ class Muons(Producer):
             product.isSoft.push_back(muon.isSoftMuon(primary_vertex))
             product.isTight.push_back(muon.isTightMuon(primary_vertex))
             product.isHighPt.push_back(muon.isHighPtMuon(primary_vertex))
+
+            pfIso = muon.pfIsolationR03()
+            fill_isolations(muon, "R03", pfIso.sumChargedHadronPt, pfIso.sumNeutralHadronEt,
+                                pfIso.sumPhotonEt, pfIso.sumPUPt, product)
+
+            pfIso = muon.pfIsolationR04()
+            fill_isolations(muon, "R04", pfIso.sumChargedHadronPt, pfIso.sumNeutralHadronEt,
+                                pfIso.sumPhotonEt, pfIso.sumPUPt, product)

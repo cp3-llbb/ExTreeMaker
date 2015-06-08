@@ -26,3 +26,28 @@ def fill_candidate(candidate, product):
         product.gen_p4.push_back(LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')())
         product.gen_y.push_back(0)
         product.gen_charge.push_back(0)
+
+def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, photonIso, puIso, product):
+    """
+
+    :param candidate:
+    :param cone_size: The cone size. Can be "R04" or "R03"
+    :param chargedHadronIso:
+    :param neutralHadronIso:
+    :param photonIso:
+    :param puIso:
+    :param product:
+    :return:
+    """
+
+    def get_product(name):
+        return getattr(product, "%s%s" % (name, cone_size)) if "%s" not in name else getattr(product, name % cone_size)
+
+    get_product("chargedHadronIso").push_back(chargedHadronIso)
+    get_product("neutralHadronIso").push_back(neutralHadronIso)
+    get_product("photonIso").push_back(photonIso)
+
+    get_product("relativeIso").push_back((chargedHadronIso + neutralHadronIso + photonIso) / candidate.pt())
+    get_product("relativeIso%s_deltaBeta").push_back((chargedHadronIso + max((neutralHadronIso + photonIso) - 0.5 * puIso,
+                                                                        0.0)) / candidate.pt())
+    get_product("relativeIso%s_withEA").push_back(0)  # FIXME: Needs EA values
