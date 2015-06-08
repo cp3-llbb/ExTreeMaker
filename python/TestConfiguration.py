@@ -20,7 +20,7 @@ class TestConfiguration(Configuration):
         Bunch(alias='puppiJets', clazz=Jets, prefix='puppijet_', jet_collection='slimmedJetsPuppi'),
         Bunch(alias='muons', clazz=Muons, prefix='muon_', muon_collection='slimmedMuons',
               vertex_collection='offlineSlimmedPrimaryVertices'),
-        Bunch(alias='electrons', clazz=Electrons, electron_collection='slimmedElectrons'),
+        Bunch(alias='electrons', clazz=Electrons, prefix='electron_', electron_collection='slimmedElectrons'),
         Bunch(alias='mets', clazz=METs, met_collection='slimmedMETs')
     ]
 
