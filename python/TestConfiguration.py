@@ -18,9 +18,10 @@ class TestConfiguration(Configuration):
         Bunch(alias='jets', clazz=Jets, prefix='jet_', jet_collection='slimmedJets',
               btag_collections=['pfCombinedInclusiveSecondaryVertexV2BJetTags']),
         Bunch(alias='puppiJets', clazz=Jets, prefix='puppijet_', jet_collection='slimmedJetsPuppi'),
-        Bunch(alias='muons', clazz=Muons, muon_collection='slimmedMuons', vertex_collection='offlineSlimmedPrimaryVertices'),
-        Bunch(alias='electrons', clazz=Electrons, electron_collection='slimmedElectrons'),
-        Bunch(alias='mets', clazz=METs, met_collection='slimmedMETs')
+        Bunch(alias='muons', clazz=Muons, prefix='muon_', muon_collection='slimmedMuons',
+              vertex_collection='offlineSlimmedPrimaryVertices'),
+        Bunch(alias='electrons', clazz=Electrons, prefix='electron_', electron_collection='slimmedElectrons'),
+        Bunch(alias='mets', clazz=METs, prefix='met_', met_collection='slimmedMETs')
     ]
 
     collections = [

@@ -2,19 +2,20 @@ __author__ = 'obondu'
 
 import Models.Electrons
 from Producer import Producer
-from ROOT.Math import LorentzVector
+from Producers.Helper import fill_candidate
 
 class Electrons(Producer):
 
-    def __init__(self, name, electron_collection):
+    def __init__(self, name, prefix, electron_collection):
         Producer.__init__(self, name)
 
-        self.uses('electrons', 'std::vector<pat::Electron>', electron_collection)
-        self.produces(Models.Electrons.Electrons, 'electrons', 'electron_')
+        self.uses(name, 'std::vector<pat::Electron>', electron_collection)
+        self.produces(Models.Electrons.Electrons, name, prefix)
 
     def produce(self, event, products):
-        for electron in event.electrons:
-            p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(electron.pt(), electron.eta(), electron.phi(), electron.energy())
-            products.electrons.electron_p4.push_back(p4)
-            products.electrons.electron_isLooseElectron.push_back(True) # fixme: implement ID criteria
-            products.electrons.electron_isTightElectron.push_back(True)
+        electrons = getattr(event, self._name)
+        product = getattr(products, self._name)
+        for electron in electrons:
+            fill_candidate(electron, product)
+            product.isLooseElectron.push_back(True) # fixme: implement ID criteria
+            product.isTightElectron.push_back(True)
