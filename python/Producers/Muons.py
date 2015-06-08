@@ -6,17 +6,18 @@ from Producers.Helper import fill_candidate
 
 class Muons(Producer):
 
-    def __init__(self, name, muon_collection, vertex_collection):
+    def __init__(self, name, prefix, muon_collection, vertex_collection):
         Producer.__init__(self, name)
 
-        self.uses('muons', 'std::vector<pat::Muon>', muon_collection)
+        self.uses(name, 'std::vector<pat::Muon>', muon_collection)
         self.uses('vertices', 'std::vector<reco::Vertex>', vertex_collection)
-        self.produces(Models.Muons.Muons, 'muons', 'muon_')
+        self.produces(Models.Muons.Muons, name, prefix)
 
     def produce(self, event, products):
-        product = products.muons
+        muons = getattr(event, self._name)
+        product = getattr(products, self._name)
         primary_vertex = event.vertices[0]
-        for muon in event.muons:
+        for muon in muons:
             fill_candidate(muon, product)
             product.isLoose.push_back(muon.isLooseMuon())
             product.isMedium.push_back(muon.isMediumMuon())
