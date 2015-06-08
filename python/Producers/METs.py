@@ -2,7 +2,7 @@ __author__ = 'obondu'
 
 import Models.METs
 from Producer import Producer
-from ROOT.Math import LorentzVector
+from Producers.Helper import fill_candidate
 
 class METs(Producer):
 
@@ -14,5 +14,4 @@ class METs(Producer):
 
     def produce(self, event, products):
         for met in event.mets:
-            p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(met.pt(), met.eta(), met.phi(), met.energy())
-            products.mets.mets_p4.push_back(p4)
+            fill_candidate(met, products.mets)

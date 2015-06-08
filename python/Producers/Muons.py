@@ -2,7 +2,7 @@ __author__ = 'obondu'
 
 import Models.Muons
 from Producer import Producer
-from ROOT.Math import LorentzVector
+from Producers.Helper import fill_candidate
 
 class Muons(Producer):
 
@@ -15,7 +15,6 @@ class Muons(Producer):
 
     def produce(self, event, products):
         for muon in event.muons:
-            p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(muon.pt(), muon.eta(), muon.phi(), muon.energy())
-            products.muons.muon_p4.push_back(p4)
+            fill_candidate(muon, products.muons)
             products.muons.muon_isLooseMuon.push_back(muon.isLooseMuon())
             products.muons.muon_isTightMuon.push_back(muon.isTightMuon(event.vertices[0]))
