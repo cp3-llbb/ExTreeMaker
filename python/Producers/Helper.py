@@ -1,5 +1,7 @@
 __author__ = 'sbrochet'
 
+import math
+
 from ROOT.Math import LorentzVector
 
 def fill_candidate(candidate, product):
@@ -9,7 +11,8 @@ def fill_candidate(candidate, product):
     :param Models.Candidates.Candidates product: the product to fill
     :return:
     """
-    p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(candidate.pt(), candidate.eta(), candidate.phi(), candidate.energy())
+    p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(candidate.pt(), candidate.eta(), candidate.phi(),
+                                                         candidate.energy())
     product.p4.push_back(p4)
     product.y.push_back(candidate.rapidity())
     product.charge.push_back(candidate.charge())
@@ -27,7 +30,8 @@ def fill_candidate(candidate, product):
         product.gen_y.push_back(0)
         product.gen_charge.push_back(0)
 
-def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, photonIso, puIso, product):
+
+def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, photonIso, puIso, rho, eta, EA, product):
     """
 
     :param candidate:
@@ -36,6 +40,9 @@ def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, ph
     :param neutralHadronIso:
     :param photonIso:
     :param puIso:
+    :param rho:
+    :param eta:
+    :param EA:
     :param product:
     :return:
     """
@@ -48,6 +55,15 @@ def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, ph
     get_product("photonIso").push_back(photonIso)
 
     get_product("relativeIso").push_back((chargedHadronIso + neutralHadronIso + photonIso) / candidate.pt())
-    get_product("relativeIso%s_deltaBeta").push_back((chargedHadronIso + max((neutralHadronIso + photonIso) - 0.5 * puIso,
-                                                                        0.0)) / candidate.pt())
-    get_product("relativeIso%s_withEA").push_back(0)  # FIXME: Needs EA values
+    get_product("relativeIso%s_deltaBeta").push_back(
+        (chargedHadronIso + max((neutralHadronIso + photonIso) - 0.5 * puIso, 0.0)) / candidate.pt())
+
+    if EA is not None:
+        eta = math.fabs(eta)
+        ea_value = EA.get(eta)
+        get_product("effectiveArea").push_back(ea_value)
+        get_product("relativeIso%s_withEA").push_back(
+            (chargedHadronIso + max((neutralHadronIso + photonIso) - rho * ea_value, 0.0)) / candidate.pt())
+    else:
+        get_product("effectiveArea").push_back(-1)  # Not available
+        get_product("relativeIso%s_withEA").push_back(-1)  # Not available

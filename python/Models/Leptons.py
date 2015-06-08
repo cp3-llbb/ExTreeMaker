@@ -14,5 +14,7 @@ class Leptons(Candidates):
     relativeIsoR04 = vector('float')
     relativeIsoR03_deltaBeta = vector('float')
     relativeIsoR04_deltaBeta = vector('float')
+    effectiveAreaR03 = vector('float')
+    effectiveAreaR04 = vector('float')
     relativeIsoR03_withEA = vector('float')
     relativeIsoR04_withEA = vector('float')
