@@ -95,11 +95,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
     runnables = producers + [analyzer]
 
     # Collect collections
-    collections = []
-    for collection in configuration.collections:
-        c = {'name': collection.alias, 'type': collection.type, 'input_tag': collection.input_tag}
-        collections.append(c)
-
+    collections = configuration.collections
     for runnable in runnables:
         collections.extend(runnable._collections)
 
@@ -122,7 +118,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
 
     # Register collections
     for collection in collections:
-        events.addCollection(collection['name'], collection['type'], collection['input_tag'])
+        events.addCollection(collection.name, collection.type, collection.input_tag)
 
     # Call beginJob
     for runnable in runnables:

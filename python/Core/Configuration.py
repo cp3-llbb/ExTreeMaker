@@ -6,7 +6,7 @@ class Bunch:
     def __init__(self, **kwds):
         self.__dict__.update(kwds)
 
-Collection = namedtuple('Collection', 'alias type input_tag')
+Collection = namedtuple('Collection', 'name type input_tag')
 
 class Configuration:
 

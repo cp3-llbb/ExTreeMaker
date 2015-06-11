@@ -39,11 +39,11 @@ class TestConfiguration(Configuration):
     ]
 
     collections = [
-        Collection(alias='vertices', type='std::vector<reco::Vertex>', input_tag='offlineSlimmedPrimaryVertices'),
-        Collection(alias='jets', type='std::vector<pat::Jet>', input_tag='slimmedJets'),
-        Collection(alias='muons', type='std::vector<pat::Muon>', input_tag='slimmedMuons'),
-        Collection(alias='electrons', type='std::vector<pat::Electron>', input_tag='slimmedElectrons'),
-        Collection(alias='mets', type='std::vector<pat::MET>', input_tag='slimmedMETs')
+        Collection(name='vertices', type='std::vector<reco::Vertex>', input_tag='offlineSlimmedPrimaryVertices'),
+        Collection(name='jets', type='std::vector<pat::Jet>', input_tag='slimmedJets'),
+        Collection(name='muons', type='std::vector<pat::Muon>', input_tag='slimmedMuons'),
+        Collection(name='electrons', type='std::vector<pat::Electron>', input_tag='slimmedElectrons'),
+        Collection(name='mets', type='std::vector<pat::MET>', input_tag='slimmedMETs')
     ]
 
     analyzer_configuration = {
