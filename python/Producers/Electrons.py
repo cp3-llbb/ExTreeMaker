@@ -1,5 +1,8 @@
 __author__ = 'obondu'
 
+from Tools import parse_effective_areas_file
+
+import Core.Configuration
 import Models.Electrons
 from Producer import Producer
 from Producers.Helper import fill_candidate, fill_isolations
@@ -33,3 +36,11 @@ class Electrons(Producer):
             fill_isolations(electron, "R04", electron.chargedHadronIso(), electron.neutralHadronIso(),
                                 electron.photonIso(), electron.puChargedHadronIso(), rho, eta,
                                 self._effective_areas_R04, product)
+
+
+_electron_effective_areas = parse_effective_areas_file("RecoEgamma/ElectronIdentification/data/PHYS14/"
+                                                       "effAreaElectrons_cone03_pfNeuHadronsAndPhotons.txt")
+
+default_configuration = Core.Configuration.Producer(name='electrons', clazz=Electrons, prefix='electron_',
+                                                    electron_collection='slimmedElectrons',
+                                                    effective_areas_R03=_electron_effective_areas)

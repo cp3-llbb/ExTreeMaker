@@ -1,10 +1,11 @@
 __author__ = 'obondu'
 
+import Core.Configuration
 import Models.Vertices
 from Producer import Producer
 
-class Vertices(Producer):
 
+class Vertices(Producer):
     def __init__(self, name, prefix, vertex_collection):
         Producer.__init__(self, name)
 
@@ -16,3 +17,7 @@ class Vertices(Producer):
         product = getattr(products, self._name)
         for vertex in vertices:
             product.position.push_back(vertex.position())
+
+
+default_configuration = Core.Configuration.Producer(name='vertices', prefix='vertex_', clazz=Vertices,
+                                                    vertex_collection='offlineSlimmedPrimaryVertices')

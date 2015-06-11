@@ -2,6 +2,7 @@ __author__ = 'sbrochet'
 
 from Producers.Producer import Producer
 
+import Core.Configuration
 import Models.Event
 
 class Event(Producer):
@@ -51,3 +52,5 @@ class Event(Producer):
 
                 product.npu = puInfo.getPU_NumInteractions()
                 product.true_interactions = puInfo.getTrueNumInteractions()
+
+default_configuration = Core.Configuration.Producer(name='event', prefix='event_', clazz=Event)

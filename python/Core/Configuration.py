@@ -9,6 +9,15 @@ class Producer:
         self.prefix = prefix
         self.__dict__.update(kwds)
 
+    def clone(self, **kwargs):
+        params = self.__dict__.copy()
+        params.update(kwargs)
+
+        return self.__class__(**params)
+
+    def __str__(self):
+        return 'Producer %r:%r -> %r' % (self.name, self.prefix, self.clazz)
+
 Collection = namedtuple('Collection', 'name type input_tag')
 
 class Configuration:
