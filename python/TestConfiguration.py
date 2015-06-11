@@ -4,6 +4,7 @@ from Core.Configuration import Configuration, Bunch, Collection
 from Tools import parse_effective_areas_file
 
 from TestAnalyzer import TestAnalyzer
+from Producers.Event import Event
 from Producers.Vertices import Vertices
 from Producers.Jets import Jets
 from Producers.Muons import Muons
@@ -24,6 +25,7 @@ class TestConfiguration(Configuration):
                                                           "effAreaMuons_cone04_pfNeuHadronsAndPhotons.txt")
 
     producers = [
+        Bunch(alias='event', prefix='event_', clazz=Event),
         Bunch(alias='vertices', clazz=Vertices, vertex_collection='offlineSlimmedPrimaryVertices'),
         Bunch(alias='jets', clazz=Jets, prefix='jet_', jet_collection='slimmedJets',
               btag_collections=['pfCombinedInclusiveSecondaryVertexV2BJetTags']),
