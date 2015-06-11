@@ -2,8 +2,11 @@ __author__ = 'sbrochet'
 
 from collections import namedtuple
 
-class Bunch:
-    def __init__(self, **kwds):
+class Producer:
+    def __init__(self, name, clazz, prefix, **kwds):
+        self.name = name
+        self.clazz = clazz
+        self.prefix = prefix
         self.__dict__.update(kwds)
 
 Collection = namedtuple('Collection', 'name type input_tag')

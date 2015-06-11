@@ -77,10 +77,8 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
     producers = []
     for producer in configuration.producers:
         clazz = producer.clazz
-        alias = producer.alias
         del producer.clazz
-        del producer.alias
-        p = clazz(alias, **producer.__dict__)
+        p = clazz(**producer.__dict__)
         producers.append(p)
 
     import ROOT
