@@ -83,16 +83,6 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
         p = clazz(alias, **producer.__dict__)
         producers.append(p)
 
-    for producer in analyzer._producers:
-        exists = next((x for x in producers if isinstance(x, type(producer)) and x._name == producer._name), None) is \
-            not None
-        if exists:
-            print("A %r producer named %r already exists. Skipping." % (producer.__class__.__name__, producer._name))
-            continue
-
-        producers.append(producer)
-
-
     import ROOT
 
     # output
