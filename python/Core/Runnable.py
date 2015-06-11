@@ -1,6 +1,7 @@
 __author__ = 'sbrochet'
 
 from pytree import TreeModel
+from Configuration import Collection
 
 class Runnable:
     """Base class for Analyzers and Producers"""
@@ -31,7 +32,7 @@ class Runnable:
         :param inputTag: The edm::InputTag of the collection
         :return:
         """
-        self._collections.append({'name': name, 'type': type, 'input_tag': inputTag})
+        self._collections.append(Collection(name=name, type=type, input_tag=inputTag))
 
     def produces(self, clazz, name, prefix):
         """

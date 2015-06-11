@@ -1,5 +1,8 @@
 __author__ = 'obondu'
 
+from Tools import parse_effective_areas_file
+
+import Core.Configuration
 import Models.Muons
 from Producer import Producer
 from Producers.Helper import fill_candidate, fill_isolations
@@ -37,3 +40,15 @@ class Muons(Producer):
             pfIso = muon.pfIsolationR04()
             fill_isolations(muon, "R04", pfIso.sumChargedHadronPt, pfIso.sumNeutralHadronEt,
                                 pfIso.sumPhotonEt, pfIso.sumPUPt, rho, muon.eta(), self._effective_areas_R04, product)
+
+
+_muon_effective_areas_R03 = parse_effective_areas_file("cp3_llbb/ExTreeMaker/data/"
+                                                       "effAreaMuons_cone03_pfNeuHadronsAndPhotons.txt")
+_muon_effective_areas_R04 = parse_effective_areas_file("cp3_llbb/ExTreeMaker/data/"
+                                                       "effAreaMuons_cone04_pfNeuHadronsAndPhotons.txt")
+
+default_configuration = Core.Configuration.Producer(name='muons', clazz=Muons, prefix='muon_',
+                                                    muon_collection='slimmedMuons',
+                                                    vertex_collection='offlineSlimmedPrimaryVertices',
+                                                    effective_areas_R03=_muon_effective_areas_R03,
+                                                    effective_areas_R04=_muon_effective_areas_R04)

@@ -1,11 +1,12 @@
 __author__ = 'obondu'
 
+import Core.Configuration
 import Models.METs
 from Producer import Producer
 from Producers.Helper import fill_candidate
 
-class METs(Producer):
 
+class METs(Producer):
     def __init__(self, name, prefix, met_collection):
         Producer.__init__(self, name)
 
@@ -17,3 +18,7 @@ class METs(Producer):
         product = getattr(products, self._name)
         for met in mets:
             fill_candidate(met, product)
+
+
+default_configuration = Core.Configuration.Producer(name='mets', clazz=METs, prefix='met_',
+                                                    met_collection='slimmedMETs')

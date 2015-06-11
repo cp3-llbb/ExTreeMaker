@@ -3,6 +3,8 @@ __author__ = 'sbrochet'
 import Models.Jets
 from Producer import Producer
 
+import Core.Configuration
+
 from Helper import fill_candidate
 
 from ROOT import std
@@ -37,3 +39,6 @@ class Jets(Producer):
                 btaggers[btagger] = jet.bDiscriminator(btagger)
 
             product.btag.push_back(btaggers)
+
+default_configuration = Core.Configuration.Producer(name='jets', clazz=Jets, prefix='jet_',
+        jet_collection='slimmedJets', btag_collections=['pfCombinedInclusiveSecondaryVertexV2BJetTags'])
