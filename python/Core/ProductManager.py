@@ -21,6 +21,12 @@ class ProductManager:
 
             return self._instance.__setattr__(item, value)
 
+        def _get_product(self):
+            """
+            :return: Returns a direct reference to the product
+            """
+            return self._instance
+
     def __init__(self, products):
         for product in products:
             self.__dict__[product['name']] = ProductManager.ProductWrapper(product['prefix'], product['instance'])

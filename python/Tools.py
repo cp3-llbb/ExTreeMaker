@@ -48,3 +48,34 @@ def parse_effective_areas_file(f):
             binning.add(float(m.group(1)), float(m.group(2)), float(m.group(3)))
 
     return binning
+
+def get_categories(tree):
+    """
+    Read from the tree the list of cuts applied.
+    :param tree: The tree produced by the framework
+    :return: A nested dictionary where the key is the category name, and the value is another dictionary. For this one,
+    the key 'description' is the category description, and the key 'cuts' is a dictionary where cut name is the key and
+    cut description the value.
+    """
+
+    treeCategories = tree.GetUserInfo().FindObject('categories')
+    if not treeCategories:
+        return {}
+
+    categories = {}
+    for category in treeCategories:
+        category = str(category.GetString())
+        name, description = category.split(':', 2)
+        categories[name] = {'description': description, 'cuts': {}}
+
+    treeCuts = tree.GetUserInfo().FindObject('cuts')
+    if not treeCuts:
+        return categories
+
+    for cut in treeCuts:
+        # format of cut should be '<category_name>:<name>:<description>'
+        cut = str(cut.GetString())
+        category_name, name, description = cut.split(':', 3)
+        categories[category_name]['cuts'][name] = description
+
+    return categories
