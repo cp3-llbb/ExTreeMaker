@@ -8,12 +8,29 @@ class Cut(object):
     class Model(TreeModel):
         cut = BoolCol(default=False)
 
-    def __init__(self, name, description=''):
+    def __init__(self, name, description='', cut=None):
         self.name = name
         self.description = description
+        self.cut = None
+        if cut is not None:
+            # Compile the cut for a faster evaluation
+            self.cut = compile(cut, '<cut:%s>' % name, 'eval')
         self.model = Cut.Model.prefix(name + '_')()
 
+    def evaluate(self, products):
+        """
+        Evaluate this cut.
+        :return:
+        """
+        if self.cut is None:
+            return
+
+        setattr(self.model, self.name + '_cut', eval(self.cut, products.__dict__))
+
     def pass_cut(self):
+        if self.cut is not None:
+            return
+
         setattr(self.model, self.name + '_cut', True)
 
     def status(self):
@@ -49,12 +66,23 @@ class Category(object):
         raise NotImplementedError('You must implement the event_in_category method')
 
     def register_cuts(self):
-        raise NotImplementedError('You must implement the register_cuts method')
+        pass
+
+    def _evaluate_cuts(self, products):
+        """
+        Private method. Iterate over all cuts and evaluate automatically those which have a cut string
+        :param products:
+        :return:
+        """
+        for cut in self.cuts.itervalues():
+            cut.evaluate(products)
+
+        self.evaluate_cuts(products)
 
     def evaluate_cuts(self, products):
-        raise NotImplementedError('You must implement the evaluate_cuts method')
+        pass
 
-    def new_cut(self, name, description=''):
+    def new_cut(self, name, description='', cut=None):
         """
         Register a new cut
         :param name: The name of the cut
@@ -64,7 +92,7 @@ class Category(object):
         if ':' in name:
             raise NameError('Invalid character in cut name: \':\'')
 
-        self.cuts[name] = Cut(self.name + '_' + name, description)
+        self.cuts[name] = Cut(self.name + '_' + name, description, cut)
 
     def pass_cut(self, name):
         """

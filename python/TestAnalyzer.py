@@ -9,7 +9,8 @@ class TestAnalyzer(Analyzer):
     class TwoMuonsCategory(Category):
         def register_cuts(self):
             self.new_cut('z_mass', 'Z mass > 5 GeV')
-            self.new_cut('leading_muon_pt', 'Leading muon pT > 10 GeV')
+            self.new_cut('leading_muon_pt', 'Leading muon pT > 10 GeV', 'muons.p4[0].Pt() > 10')
+            self.new_cut('leading_jet_pt', 'Leading jet pT > 10 GeV')
 
         def event_in_category(self, products):
             return len(products.muons.p4) > 1
@@ -18,8 +19,8 @@ class TestAnalyzer(Analyzer):
             if products.z.p4[0].M() > 5:
                 self.pass_cut('z_mass')
 
-            if products.muons.p4[0].Pt() > 10:
-                self.pass_cut('leading_muon_pt')
+            if products.jets.p4[0].Pt() > 10:
+                self.pass_cut('leading_jet_pt')
 
     class TwoElectronsCategory(Category):
         def register_cuts(self):

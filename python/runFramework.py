@@ -162,7 +162,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
         # Test categories
         for category in analyzer._categories.itervalues():
             if category._test_event_category(product_manager):
-                category.evaluate_cuts(product_manager)
+                category._evaluate_cuts(product_manager)
 
         # To be kept, an event must belong to at least one category
         if len(analyzer._categories) > 0:
