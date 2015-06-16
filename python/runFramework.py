@@ -105,14 +105,34 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
     for runnable in runnables:
         createBranches(runnable._products)
 
+    # Create branches in the tree for each registered cut of the analyzer
+    # Store description as a 'user info' list into the tree
+
+    categories_info = ROOT.TObjArray()
+    categories_info.SetName('categories')
+
+    cuts_info = ROOT.TObjArray()
+    cuts_info.SetName('cuts')
+
+    events_saved_per_category = {}
+    for cat_name, category in analyzer._categories.items():
+        categories_info.Add(ROOT.TObjString('%s:%s' % (category.name, category.description)))
+        tree.set_buffer(category.model, create_branches=True, visible=False)
+        category.register_cuts()
+        events_saved_per_category[category.description] = 0
+
+        for cut_name, cut in category.cuts.items():
+            cuts_info.Add(ROOT.TObjString('%s:%s:%s' % (category.name, cut.name, cut.description)))
+            tree.set_buffer(cut.model, create_branches=True, visible=False)
+
+    tree.GetUserInfo().Add(categories_info)
+    tree.GetUserInfo().Add(cuts_info)
+
     # Products manager. Main access point to products from Analyzer
     product_manager = ProductManager([product for x in runnables for product in x._products])
 
     # events iterator, plus configuration of standard collections and producers
     events = AnalysisEvent(files)
-
-    # FIXME: Work on selections
-    #EventSelection.prepareAnalysisEvent(events)
 
     # Register collections
     for collection in collections:
@@ -124,6 +144,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
 
     # main event loop
     i = 0
+    events_saved = 0
     t0 = time.time()
     for event in events:
         # printout
@@ -138,8 +159,33 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
 
         analyzer.analyze(event, product_manager)
 
-        # fill the tree
-        tree.Fill(reset=True)
+        # Test categories
+        for category in analyzer._categories.itervalues():
+            if category._test_event_category(product_manager):
+                category._evaluate_cuts(product_manager)
+
+        # To be kept, an event must belong to at least one category
+        if len(analyzer._categories) > 0:
+            keepEvent = False
+            for category_name, category in analyzer._categories.items():
+                if category.in_category:
+                    keepEvent |= True
+                    events_saved_per_category[category.description] += 1
+
+            if keepEvent:
+                tree.Fill(reset=True)
+                events_saved += 1
+            else:
+                tree.reset_branch_values()
+
+        else:
+            tree.Fill(reset=True)
+            events_saved += 1
+
+        for category in analyzer._categories.itervalues():
+            category.reset()
+            for cut in category.cuts.itervalues():
+                cut.model.reset()
 
         i += 1
 
@@ -152,6 +198,14 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
 
     # close the file
     output.Close()
+
+    print('')
+    print('Job done. %d events processed, %d events saved' % (i, events_saved))
+    if len(events_saved_per_category) > 0:
+        print('{:60s} {:20s}'.format('Category', '# events'))
+        print('-' * 81)
+        for name, value in events_saved_per_category.items():
+            print('{:60s} {:<20d}'.format(name, value))
 
 
 runAnalysis(input_files=options.path, output_name=options.outputname, Njobs=options.Njobs, jobNumber=options.jobNumber)
