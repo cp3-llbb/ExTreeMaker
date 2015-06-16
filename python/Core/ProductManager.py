@@ -37,6 +37,32 @@ class ProductManager:
         """ Let it go, let it go!"""
         return self._frozen
 
+    def new_product_branch(self, product, branch_name, clazz):
+        """
+        Add a new branch to an already created product. This adds a new attribute to the product, and create the
+        branch on the output tree
+        :param product: The newly created branch will be added to this product
+        :param branch_name: The new name of the branch. It'll be prefixed by the product's prefix
+        :param clazz: The class of the new branch.
+        :return:
+        """
+        if self._frozen:
+            raise RuntimeError('You can\'t add a new branch to the tree if its frozen (Fill has already been '
+                               'called once)')
+
+        branch_name = product._prefix + branch_name
+
+        instance = clazz()
+
+        # Add the new attribute to the product
+        product._get_product()[branch_name] = instance
+
+        # Create the branch on the tree
+        self._tree._create_branch(branch_name, instance)
+
+        # Update the main tree buffer
+        self._tree._buffer[branch_name] = instance
+
     def add_metadata(self, name, value):
         """
         Store a new metadata inside the tree UserInfo

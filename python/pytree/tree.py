@@ -184,25 +184,8 @@ class BaseTree(NamedObject):
         if create_branches:
             for name in branches:
                 value = treebuffer[name]
-                if self.has_branch(name):
-                    if ignore_duplicates:
-                        #log.warning(
-                            #"Skipping entry in buffer with the same name "
-                            #"as an existing branch: `{0}`".format(name))
-                        continue
-                    raise ValueError(
-                        "Attempting to create two branches "
-                        "with the same name: `{0}`".format(name))
-                if isinstance(value, Scalar):
-                    self.Branch(name, value,
-                        '{0}/{1}'.format(
-                            name, value.type))
-                elif isinstance(value, Array):
-                    self.Branch(name, value,
-                        '{0}[{2:d}]/{1}'.format(
-                            name, value.type, len(value)))
-                else:
-                    self.Branch(name, value)
+                self._create_branch(name, value, ignore_duplicates=ignore_duplicates)
+
         else:
             for name in branches:
                 value = treebuffer[name]
@@ -224,6 +207,27 @@ class BaseTree(NamedObject):
                     newbuffer[branch] = treebuffer[branch]
             newbuffer.set_objects(treebuffer)
             self.update_buffer(newbuffer, transfer_objects=transfer_objects)
+
+    def _create_branch(self, name, value, ignore_duplicates=False):
+        if self.has_branch(name):
+            if ignore_duplicates:
+                #log.warning(
+                    #"Skipping entry in buffer with the same name "
+                    #"as an existing branch: `{0}`".format(name))
+                return
+            raise ValueError(
+                "Attempting to create two branches "
+                "with the same name: `{0}`".format(name))
+        if isinstance(value, Scalar):
+            self.Branch(name, value,
+                '{0}/{1}'.format(
+                    name, value.type))
+        elif isinstance(value, Array):
+            self.Branch(name, value,
+                '{0}[{2:d}]/{1}'.format(
+                    name, value.type, len(value)))
+        else:
+            self.Branch(name, value)
 
     def activate(self, branches, exclusive=False):
         """
