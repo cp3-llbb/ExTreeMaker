@@ -27,6 +27,32 @@ class ProductManager:
             """
             return self._instance
 
-    def __init__(self, products):
+    def __init__(self, tree, products):
+        self._frozen = False
+        self._tree = tree
         for product in products:
             self.__dict__[product['name']] = ProductManager.ProductWrapper(product['prefix'], product['instance'])
+
+    def frozen(self):
+        """ Let it go, let it go!"""
+        return self._frozen
+
+    def add_metadata(self, name, value):
+        """
+        Store a new metadata inside the tree UserInfo
+        :param name: Name of the new object added to the UserInfo list
+        :param value: The value to store into the UserList list
+        :return: Nothing
+        """
+
+        data = None
+        if isinstance(value, str):
+            from ROOT import TNamed
+            data = TNamed()
+            data.SetTitle(value)
+
+        if data is None:
+            raise TypeError('Unsupported metadata type: %r' % value.__class__.__name__)
+
+        data.SetName(name)
+        self._tree.GetUserInfo().Add(data)

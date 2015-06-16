@@ -5,6 +5,13 @@ import re
 
 from Core.Binning import OneDimensionBinning
 
+# loop over containers with begin and end iterators
+def loop(begin, end):
+    """Convert a pair of C++ iterators into a python generator"""
+    while begin != end:
+        yield begin.__deref__()  # *b
+        begin.__preinc__()       # ++b
+
 def file_lookup(paths, f):
     """
     Iterates over 'paths' and look if a file named 'f' exists
