@@ -4,10 +4,9 @@ import Models.Jets
 from Producer import Producer
 
 import Core.Configuration
+from Core import Classes
 
 from Helper import fill_candidate
-
-from ROOT import std
 
 class Jets(Producer):
 
@@ -34,7 +33,7 @@ class Jets(Producer):
 
             product.vtxMass.push_back(jet.userFloat('vtxMass'))
 
-            btaggers = std.map('std::string, float')()
+            btaggers = Classes.StringFloatMap()
             for btagger in self.btag_collections:
                 btaggers[btagger] = jet.bDiscriminator(btagger)
 

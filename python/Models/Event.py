@@ -3,7 +3,7 @@ __author__ = 'sbrochet'
 from pytree import TreeModel
 from pytree import FloatCol, ULongCol, IntCol
 
-from ROOT import std
+from Core import Classes
 
 class Event(TreeModel):
     run = ULongCol()
@@ -21,8 +21,8 @@ class Event(TreeModel):
     alpha_QCD = FloatCol()
     alpha_QED = FloatCol()
     q_scale = FloatCol()
-    pdf_id = std.pair('int, int')
-    pdf_x = std.pair('float, float')
+    pdf_id = Classes.IntIntPair
+    pdf_x = Classes.FloatFloatPair
 
     n_ME_partons = IntCol()
     n_ME_partons_filtered = IntCol()

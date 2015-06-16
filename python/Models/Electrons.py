@@ -2,8 +2,8 @@ __author__ = 'obondu'
 
 from Leptons import Leptons
 
-import ROOT
+from Core import Classes
 
 class Electrons(Leptons):
-    isLooseElectron = ROOT.vector('bool')
-    isTightElectron = ROOT.vector('bool')
+    isLooseElectron = Classes.BoolCollection
+    isTightElectron = Classes.BoolCollection

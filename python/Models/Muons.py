@@ -2,11 +2,11 @@ __author__ = 'obondu'
 
 from Leptons import Leptons
 
-import ROOT
+from Core import Classes
 
 class Muons(Leptons):
-    isLoose = ROOT.vector('bool')
-    isMedium = ROOT.vector('bool')
-    isSoft = ROOT.vector('bool')
-    isTight = ROOT.vector('bool')
-    isHighPt = ROOT.vector('bool')
+    isLoose = Classes.BoolCollection
+    isMedium = Classes.BoolCollection
+    isSoft = Classes.BoolCollection
+    isTight = Classes.BoolCollection
+    isHighPt = Classes.BoolCollection

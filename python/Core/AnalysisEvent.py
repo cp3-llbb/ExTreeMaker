@@ -1,7 +1,4 @@
-import CMSSW
 from DataFormats.FWLite import Events, Handle
-from FWCore.ParameterSet.Types import InputTag
-from inspect import getargspec
 from datetime import datetime
 from collections import Iterable, namedtuple
 from types import StringTypes

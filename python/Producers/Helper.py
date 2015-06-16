@@ -2,7 +2,7 @@ __author__ = 'sbrochet'
 
 import math
 
-from ROOT.Math import LorentzVector
+from Core import Classes
 
 def fill_candidate(candidate, product):
     """
@@ -11,7 +11,7 @@ def fill_candidate(candidate, product):
     :param Models.Candidates.Candidates product: the product to fill
     :return:
     """
-    p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(candidate.pt(), candidate.eta(), candidate.phi(),
+    p4 = Classes.LorentzVector(candidate.pt(), candidate.eta(), candidate.phi(),
                                                          candidate.energy())
     product.p4.push_back(p4)
     product.y.push_back(candidate.rapidity())
@@ -20,13 +20,13 @@ def fill_candidate(candidate, product):
     gen = candidate.genParticle()
     if gen:
         product.has_matched_gen_particle.push_back(True)
-        p4 = LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(gen.pt(), gen.eta(), gen.phi(), gen.energy())
+        p4 = Classes.LorentzVector(gen.pt(), gen.eta(), gen.phi(), gen.energy())
         product.gen_p4.push_back(p4)
         product.gen_y.push_back(gen.rapidity())
         product.gen_charge.push_back(gen.charge())
     else:
         product.has_matched_gen_particle.push_back(False)
-        product.gen_p4.push_back(LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')())
+        product.gen_p4.push_back(Classes.LorentzVector())
         product.gen_y.push_back(0)
         product.gen_charge.push_back(0)
 
