@@ -1,16 +1,15 @@
 __author__ = 'sbrochet'
 
 from Candidates import Candidates
-
-import ROOT
+from Core import Classes
 
 class Jets(Candidates):
-    area = ROOT.vector('float')
-    partonFlavor = ROOT.vector('int8_t')
-    hadronFlavor = ROOT.vector('int8_t')
-    jecFactor = ROOT.vector('float')
+    area = Classes.FloatCollection
+    partonFlavor = Classes.Int8Collection
+    hadronFlavor = Classes.Int8Collection
+    jecFactor = Classes.FloatCollection
 
-    pu_jet_id = ROOT.vector('float')
-    vtxMass = ROOT.vector('float')
+    pu_jet_id = Classes.FloatCollection
+    vtxMass = Classes.FloatCollection
 
-    btag = ROOT.vector('std::map<std::string, float>')
+    btag = Classes.StringFloatMapCollection

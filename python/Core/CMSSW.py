@@ -1,11 +1,9 @@
-import ROOT
+import ROOT as ROOT
 
 ROOT.gSystem.Load("libFWCoreFWLite.so")
 ROOT.AutoLibraryLoader.enable()
 ROOT.gSystem.Load("libPhysicsToolsUtilities.so")
 from types import MethodType
-import libPyROOT as _root
-from ROOT import TLorentzVector, TVector3
 from math import sin
 
 #####################################################
@@ -53,8 +51,8 @@ def _pat_Jet__str__(self):
         if not sv is None:
             distance = taginfo.flightDistance(0, True)
             dir = taginfo.flightDirection(0)
-            dirv = TVector3(dir.x(), dir.y(), dir.z())
-            dirj = TVector3(self.px(), self.py(), self.pz())
+            dirv = ROOT.TVector3(dir.x(), dir.y(), dir.z())
+            dirj = ROOT.TVector3(self.px(), self.py(), self.pz())
             theString += "     details about the secondary vertex:\n"
             theString += "     * number of tracks: %d\n" % sv.tracksSize()
             theString += "     * chi2: %f\n" % sv.chi2()
@@ -185,16 +183,3 @@ def _GenEventInfoProduct__str__(self):
 
 
 ROOT.GenEventInfoProduct.__str__ = MethodType(_GenEventInfoProduct__str__, None, ROOT.GenEventInfoProduct)
-
-
-#####################################################
-### Definition of additional ROOT methods         ###
-#####################################################
-
-def _lorentzVector__str__(self):
-    theString = "(pt, eta, phi) = (%f,%f,%f)\n" % (self.Pt(), self.Eta(), self.Phi())
-    theString += "mass = %f, p = %f, mt = %f\n" % (self.M(), self.P(), self.Mt())
-    return theString
-
-
-_root.MakeRootClass("TLorentzVector").__str__ = _lorentzVector__str__
