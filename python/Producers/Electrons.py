@@ -25,6 +25,10 @@ class Electrons(Producer):
         rho = event.rho[0]
         for electron in electrons:
             fill_candidate(electron, product)
+
+            product.supercluster_eta.push_back(electron.superCluster().eta())
+            product.supercluster_phi.push_back(electron.superCluster().phi())
+
             product.isLooseElectron.push_back(True) # fixme: implement ID criteria
             product.isTightElectron.push_back(True)
 
