@@ -10,10 +10,11 @@ from Helper import fill_candidate
 
 class Jets(Producer):
 
-    def __init__(self, name, prefix, jet_collection, btag_collections=[]):
+    def __init__(self, name, prefix, jet_collection):
         Producer.__init__(self, name)
 
-        self.btag_collections = btag_collections
+        self.btag_branch_created = False
+
         self.uses(name, 'std::vector<pat::Jet>', jet_collection)
         self.produces(Models.Jets.Jets, name, prefix)
 
@@ -33,11 +34,15 @@ class Jets(Producer):
 
             product.vtxMass.push_back(jet.userFloat('vtxMass'))
 
-            btaggers = Classes.StringFloatMap()
-            for btagger in self.btag_collections:
-                btaggers[btagger] = jet.bDiscriminator(btagger)
+            btag_discris = jet.getPairDiscri()
+            for btag_discri in btag_discris:
+                if not products.frozen() and not self.btag_branch_created:
+                    products.new_product_branch(product, btag_discri.first, Classes.FloatCollection)
 
-            product.btag.push_back(btaggers)
+                getattr(product, btag_discri.first).push_back(btag_discri.second)
+
+            if not products.frozen() and not self.btag_branch_created:
+               self.btag_branch_created = True
 
 default_configuration = Core.Configuration.Producer(name='jets', clazz=Jets, prefix='jet_',
-        jet_collection='slimmedJets', btag_collections=['pfCombinedInclusiveSecondaryVertexV2BJetTags'])
+                                                    jet_collection='slimmedJets')
