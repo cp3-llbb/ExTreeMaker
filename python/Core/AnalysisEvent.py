@@ -3,6 +3,56 @@ from datetime import datetime
 from collections import Iterable, namedtuple
 from types import StringTypes
 
+class Run:
+    """Python interface to FWLite Run"""
+    def __init__ (self, run):
+        self._run = run
+        self._runCounts = 0
+        self._tfile = None
+        self._maxRuns = 0
+
+
+    def __del__ (self):
+        """(Internal) Destructor"""
+        # print "Goodbye cruel world, I'm leaving you today."
+        del self._run
+        # print "Goodbye, goodbye, goodbye."
+
+    def getByLabel (self, *args):
+        """Calls FWLite's getByLabel.  Called:
+        getByLabel (moduleLabel, handle)
+        getByLabel (moduleLabel, productInstanceLabel, handle),
+        getByLabel (moduleLabel, productInstanceLabel, processLabel, handle),
+        or
+        getByLabel ( (mL, pIL,pL), handle)
+        """
+        length = len (args)
+        if length < 2 or length > 4:
+            # not called correctly
+            raise RuntimeError, "Incorrect number of arguments"
+        # handle is always the last argument
+        argsList = list (args)
+        handle = argsList.pop()
+        if len(argsList)==1 and \
+               ( isinstance (argsList[0], tuple) or
+                 isinstance (argsList[0], list) ) :
+            if len (argsList) > 3:
+                raise RuntimeError, "getByLabel Error: label tuple has too " \
+                      "many arguments '%s'" % argsList[0]
+            argsList = list(argsList[0])
+        while len(argsList) < 3:
+            argsList.append ('')
+        (moduleLabel, productInstanceLabel, processLabel) = argsList
+        labelString = "'" + "', '".join(argsList) + "'"
+        if not handle._wrapper :
+            handle._resetWrapper()
+        handle._setStatus ( self._run.getByLabel( handle._typeInfoGetter(),
+                                                   moduleLabel,
+                                                   productInstanceLabel,
+                                                   processLabel,
+                                                   handle._addressOf() ),
+                            labelString )
+        return handle.isValid()
 
 class AnalysisEvent(Events):
     """A class that complements fwlite::Events with analysis facilities.
@@ -86,6 +136,21 @@ class AnalysisEvent(Events):
     def lumi(self):
         """Lumisection"""
         return self.eventAuxiliary().luminosityBlock()
+
+    def run_object(self):
+        """
+        Return an instance of :class:``fwlite::Run``
+        :return: instance of :class:``fwlite::Run`` for the current run
+        """
+
+        # Unfortunately, base FWLite Events class does not implement the ``getRun`` function of C++ ``fwlite::Event``.
+        # Access directly the low-level variable
+        # See source code of ``Events`` here:
+        # https://github.com/cms-sw/cmssw/blob/CMSSW_7_5_X/DataFormats/FWLite/python/__init__.py#L447
+        if self._veryFirstTime:
+            self._createFWLiteEvent()
+
+        return Run(self._event.getRun())
 
     def to(self, run, event, lumi=None):
         """Jump to some event,run,lumisection"""

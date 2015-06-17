@@ -26,3 +26,7 @@ class Event(TreeModel):
 
     n_ME_partons = IntCol()
     n_ME_partons_filtered = IntCol()
+
+    lhe_originalXWGTUP = FloatCol()
+    lhe_SCALUP = FloatCol()
+    lhe_weights = Classes.StringFloatPairCollection

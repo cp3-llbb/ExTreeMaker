@@ -129,7 +129,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
     tree.GetUserInfo().Add(cuts_info)
 
     # Products manager. Main access point to products from Analyzer
-    product_manager = ProductManager([product for x in runnables for product in x._products])
+    product_manager = ProductManager(tree, [product for x in runnables for product in x._products])
 
     # events iterator, plus configuration of standard collections and producers
     events = AnalysisEvent(files)
@@ -181,6 +181,10 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
         else:
             tree.Fill(reset=True)
             events_saved += 1
+
+        if events_saved == 1:
+            # Freeze all the products
+            product_manager._frozen = True
 
         for category in analyzer._categories.itervalues():
             category.reset()
