@@ -159,7 +159,7 @@ def run(configuration_file, input_files, output_name, n_events):
         runnable.endJob()
 
     # Write the tree
-    output.Write()
+    output.Write("dummy", ROOT.TObject.kOverwrite)
 
     # close the file
     output.Close()
