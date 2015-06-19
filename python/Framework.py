@@ -1,70 +1,31 @@
 __author__ = 'sbrochet'
 
+"""
+Main entry point of the framework. This file is loaded either by runFramework from this package or
+runFrameworkOnGrid from the GridIn package
+"""
+
 from pytree import Tree
 from Core.AnalysisEvent import AnalysisEvent
 from Core.ProductManager import ProductManager
 
 import os
 import time
-import itertools
-from optparse import OptionParser
 
-usage = """%prog [options]"""
-description = """Launch the framework to produce a nice tree."""
-epilog = """Example:
-./runFramework.py -i ./ -o output.root -c TestConfiguration
-"""
-parser = OptionParser(usage=usage, add_help_option=True, description=description, epilog=epilog)
-parser.add_option("-c", "--configuration", dest="conf", default=None,
-                  help="Analyzer class.")
-parser.add_option("-i", "--inputPath", dest="path",
-                  help="Read input file from DIR.", metavar="DIR")
-parser.add_option("-o", "--output", dest='outputname', default=None,
-                  help="Save output as FILE.", metavar="FILE")
-parser.add_option("--all", action="store_true", dest="all",
-                  help="Process all levels.")
-parser.add_option("-l", "--level", dest="levels",
-                  help="Specify a coma-separated list of levels to be processed. No space is allowed.")
-parser.add_option("--Njobs", type="int", dest='Njobs', default="1",
-                  help="Number of jobs when splitting the processing.")
-parser.add_option("--jobNumber", type="int", dest='jobNumber', default="0",
-                  help="Number of the job is a splitted set of jobs.")
-parser.add_option("--nEvents", type="int", dest='nEvents', default="0",
-                  help="Run only nEvents for the given job. Useful for testing")
-
-(options, args) = parser.parse_args()
-
-if options.conf is None:
-    raise RuntimeError("You must provide a configuration file")
-
-# Load configuration class
-
-configurationClass = os.path.splitext(options.conf)[0]
-configurationModule = __import__(configurationClass)
-
-configuration = getattr(configurationModule, configurationClass)()
-
-def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
+def run(configuration_file, input_files, output_name, n_events):
     """
     Main function. Loop over all events and call what's need to be called
 
-    :param input_files: The input file or directory
+    :param input_files: A list of input files
     :param output_name: The output filename
-    :param Njobs: Number of total jobs
-    :param jobNumber: Index of the current job
+    :param n_events: Maximum number of events to process. -1 for all
     :return: Nothing
     """
 
-    # inputs
-    files = []
-    if os.path.isdir(input_files):
-        dirList = list(itertools.islice(os.listdir(input_files), jobNumber, None, Njobs))
-        for fname in dirList:
-            files.append(os.path.join(input_files, fname))
-    elif os.path.isfile(input_files):
-        files = [input_files]
-    else:
-        files = []
+    configurationClass = os.path.splitext(configuration_file)[0]
+    configurationModule = __import__(configurationClass)
+
+    configuration = getattr(configurationModule, configurationClass)()
 
     # Parse configuration
     if output_name is None:
@@ -132,7 +93,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
     product_manager = ProductManager(tree, [product for x in runnables for product in x._products])
 
     # events iterator, plus configuration of standard collections and producers
-    events = AnalysisEvent(files)
+    events = AnalysisEvent(input_files)
 
     # Register collections
     for collection in collections:
@@ -151,7 +112,7 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
         if i % 100 == 0:
             print "Processing... event %d. Last batch in %f s." % (i, (time.time() - t0))
             t0 = time.time()
-        if i >= options.nEvents != 0:
+        if 0 < n_events <= i:
             break
 
         for producer in producers:
@@ -210,6 +171,3 @@ def runAnalysis(input_files, output_name, Njobs=1, jobNumber=1):
         print('-' * 81)
         for name, value in events_saved_per_category.items():
             print('{:60s} {:<20d}'.format(name, value))
-
-
-runAnalysis(input_files=options.path, output_name=options.outputname, Njobs=options.Njobs, jobNumber=options.jobNumber)
