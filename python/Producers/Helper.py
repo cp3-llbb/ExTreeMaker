@@ -61,9 +61,13 @@ def fill_isolations(candidate, cone_size, chargedHadronIso, neutralHadronIso, ph
     if EA is not None:
         eta = math.fabs(eta)
         ea_value = EA.get(eta)
-        get_product("effectiveArea").push_back(ea_value)
-        get_product("relativeIso%s_withEA").push_back(
-            (chargedHadronIso + max((neutralHadronIso + photonIso) - rho * ea_value, 0.0)) / candidate.pt())
+        if ea_value is not None:
+            get_product("effectiveArea").push_back(ea_value)
+            get_product("relativeIso%s_withEA").push_back(
+                (chargedHadronIso + max((neutralHadronIso + photonIso) - rho * ea_value, 0.0)) / candidate.pt())
+        else:
+            get_product("effectiveArea").push_back(-1)  # Not available
+            get_product("relativeIso%s_withEA").push_back(-1)  # Not available
     else:
         get_product("effectiveArea").push_back(-1)  # Not available
         get_product("relativeIso%s_withEA").push_back(-1)  # Not available
