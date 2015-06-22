@@ -290,3 +290,11 @@ class AnalysisEvent(Events):
             else:
                 mystring += "%s => %s\n" % (k, str(v))
         return mystring
+
+    def get_current_file(self):
+        """
+        Returns the currently opened TFile
+        :return:
+        """
+
+        return self.object().event().getTFile()

@@ -68,6 +68,9 @@ def get_options():
     parser.add_option("--nEvents", type="int", dest='nEvents', default="-1",
                       help="Run only nEvents for the given job. Useful for testing")
 
+    parser.add_option('-j', '--report', dest='report', default=None, help='Save a report of the job as FILE',
+                      metavar='FILE')
+
     (options, args) = parser.parse_args()
 
     if options.conf is None:
@@ -76,5 +79,6 @@ def get_options():
     return options
 
 options = get_options()
+
 Framework.run(options.conf, input_files=parse_input(options.input), output_name=options.outputname,
-              n_events=options.nEvents)
+              n_events=options.nEvents, report_file_name=options.report)

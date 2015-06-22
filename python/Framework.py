@@ -8,11 +8,17 @@ runFrameworkOnGrid from the GridIn package
 from pytree import Tree
 from Core.AnalysisEvent import AnalysisEvent
 from Core.ProductManager import ProductManager
+from Core.ReportProducer import ReportProducer
 
 import os
 import time
+import signal
 
-def run(configuration_file, input_files, output_name, n_events):
+def sigint_handler(signal, frame):
+        global global_interrupt
+        global_interrupt = True
+
+def run(configuration_file, input_files, output_name, n_events, report_file_name=None):
     """
     Main function. Loop over all events and call what's need to be called
 
@@ -21,6 +27,11 @@ def run(configuration_file, input_files, output_name, n_events):
     :param n_events: Maximum number of events to process. -1 for all
     :return: Nothing
     """
+
+    # Register CTRL+C handler to exit gracefully
+    global global_interrupt
+    global_interrupt = False
+    signal.signal(signal.SIGINT, sigint_handler)
 
     configurationClass = os.path.splitext(configuration_file)[0]
     configurationModule = __import__(configurationClass)
@@ -103,17 +114,50 @@ def run(configuration_file, input_files, output_name, n_events):
     for runnable in runnables:
         runnable.beginJob()
 
+    # Job report
+    job_report = None
+    if report_file_name is not None:
+        job_report = ReportProducer(report_file_name)
+        job_report.report_output_file(os.path.abspath(output_name))
+
     # main event loop
     i = 0
     events_saved = 0
     t0 = time.time()
+    old_current_file = None
+    current_file_token = None
+    old_run = None
+    old_lumi = None
+
     for event in events:
+
+        if global_interrupt:
+            break
+
         # printout
         if i % 100 == 0:
             print "Processing... event %d. Last batch in %f s." % (i, (time.time() - t0))
             t0 = time.time()
         if 0 < n_events <= i:
             break
+
+        if job_report is not None:
+            run = event.run()
+            lumi = event.lumi()
+            current_file = event.get_current_file().GetName()
+
+            if current_file != old_current_file:
+                old_run = None
+                old_lumi = None
+                old_current_file = current_file
+                current_file_token = job_report.report_input_file(current_file)
+
+            job_report.report_event_read(current_file_token)
+
+            if run != old_run or lumi != old_lumi:
+                job_report.report_lumi_section(current_file_token, run, lumi)
+                old_run = run
+                old_lumi = lumi
 
         for producer in producers:
             producer.produce(event, product_manager)
@@ -136,12 +180,16 @@ def run(configuration_file, input_files, output_name, n_events):
             if keepEvent:
                 tree.Fill(reset=True)
                 events_saved += 1
+                if job_report is not None:
+                    job_report.report_event_saved()
             else:
                 tree.reset_branch_values()
 
         else:
             tree.Fill(reset=True)
             events_saved += 1
+            if job_report is not None:
+                job_report.report_event_saved()
 
         if events_saved == 1:
             # Freeze all the products
@@ -163,6 +211,11 @@ def run(configuration_file, input_files, output_name, n_events):
 
     # close the file
     output.Close()
+
+    # Report
+    if job_report is not None:
+        job_report.save()
+        print('Job report saved as %r' % report_file_name)
 
     print('')
     print('Job done. %d events processed, %d events saved' % (i, events_saved))
