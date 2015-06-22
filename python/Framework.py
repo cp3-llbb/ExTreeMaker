@@ -9,6 +9,7 @@ from pytree import Tree
 from Core.AnalysisEvent import AnalysisEvent
 from Core.ProductManager import ProductManager
 from Core.ReportProducer import ReportProducer
+from Core.LumiMask import LumiMask
 
 import os
 import time
@@ -18,7 +19,7 @@ def sigint_handler(signal, frame):
         global global_interrupt
         global_interrupt = True
 
-def run(configuration_file, input_files, output_name, n_events, report_file_name=None):
+def run(configuration_file, input_files, output_name, n_events, report_file_name=None, lumi_mask=None):
     """
     Main function. Loop over all events and call what's need to be called
 
@@ -120,6 +121,10 @@ def run(configuration_file, input_files, output_name, n_events, report_file_name
         job_report = ReportProducer(report_file_name)
         job_report.report_output_file(os.path.abspath(output_name))
 
+    # Lumi mask
+    if lumi_mask is not None:
+        lumi_mask = LumiMask(lumi_mask)
+
     # main event loop
     i = 0
     events_saved = 0
@@ -141,9 +146,12 @@ def run(configuration_file, input_files, output_name, n_events, report_file_name
         if 0 < n_events <= i:
             break
 
+        i += 1
+
+        run = event.run()
+        lumi = event.lumi()
+
         if job_report is not None:
-            run = event.run()
-            lumi = event.lumi()
             current_file = event.get_current_file().GetName()
 
             if current_file != old_current_file:
@@ -154,10 +162,13 @@ def run(configuration_file, input_files, output_name, n_events, report_file_name
 
             job_report.report_event_read(current_file_token)
 
-            if run != old_run or lumi != old_lumi:
-                job_report.report_lumi_section(current_file_token, run, lumi)
-                old_run = run
-                old_lumi = lumi
+        if lumi_mask and (run, lumi) not in lumi_mask:
+            continue
+
+        if job_report is not None and (run != old_run or lumi != old_lumi):
+            job_report.report_lumi_section(current_file_token, run, lumi)
+            old_run = run
+            old_lumi = lumi
 
         for producer in producers:
             producer.produce(event, product_manager)
@@ -199,8 +210,6 @@ def run(configuration_file, input_files, output_name, n_events, report_file_name
             category.reset()
             for cut in category.cuts.itervalues():
                 cut.model.reset()
-
-        i += 1
 
     # Call endJob
     for runnable in runnables:
