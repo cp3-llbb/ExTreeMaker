@@ -52,19 +52,12 @@ class TestAnalyzer(Analyzer):
         pass
 
     def analyze(self, event, products):
-        print("Analyzing event!")
-
-        print "The event contain:", len(event.vertices), 'vertices', len(event.jets), 'jets', len(event.muons), 'muons', len(event.electrons), 'electrons', len(event.mets), 'mets'
         if len(event.muons) >= 2:
             p4 = event.muons[0].p4() + event.muons[1].p4()
             products.z.p4.push_back(LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(p4.Pt(), p4.Eta(), p4.Phi(), p4.E()))
         elif len(products.electrons.p4) >= 2:
             p4 = products.electrons.p4[0] + products.electrons.p4[1]
             products.z.p4.push_back(LorentzVector('ROOT::Math::PtEtaPhiE4D<float>')(p4.Pt(), p4.Eta(), p4.Phi(), p4.E()))
-
-        # Access product produced by the Jets producer
-        for z in products.z.p4:
-            print "Z candidate mass:", z.M()
 
     def endJob(self):
         print("End job!")
