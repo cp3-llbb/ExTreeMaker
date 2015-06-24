@@ -152,6 +152,9 @@ class AnalysisEvent(Events):
 
         return Run(self._event.getRun())
 
+    def trigger_names(self, trigger_results):
+        return self._event.triggerNames(trigger_results)
+
     def to(self, run, event, lumi=None):
         """Jump to some event,run,lumisection"""
         if self._veryFirstTime:

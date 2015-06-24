@@ -4,6 +4,7 @@ from Core.Configuration import Configuration, Collection
 
 from TestAnalyzer import TestAnalyzer
 
+import Producers.HLT
 import Producers.Event
 import Producers.Vertices
 import Producers.Jets
@@ -17,6 +18,7 @@ class TestConfiguration(Configuration):
     analyzer = TestAnalyzer
 
     producers = [
+        Producers.HLT.default_configuration,
         Producers.Event.default_configuration,
         Producers.Vertices.default_configuration,
         Producers.Jets.default_configuration,
