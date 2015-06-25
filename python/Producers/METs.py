@@ -7,8 +7,8 @@ from Producers.Helper import fill_candidate
 
 
 class METs(Producer):
-    def __init__(self, name, prefix, met_collection):
-        Producer.__init__(self, name)
+    def __init__(self, name, prefix, met_collection, **kwargs):
+        Producer.__init__(self, name, **kwargs)
 
         self.uses(name, 'std::vector<pat::MET>', met_collection)
         self.produces(Models.METs.METs, name, prefix)
@@ -17,6 +17,8 @@ class METs(Producer):
         mets = getattr(event, self._name)
         product = getattr(products, self._name)
         for met in mets:
+            if not self.pass_cut(met):
+                continue
             fill_candidate(met, product)
 
 

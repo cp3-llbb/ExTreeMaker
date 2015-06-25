@@ -33,7 +33,7 @@ def fill_particle(product, p):
 class GenParticles(Producer):
 
     def __init__(self, name, prefix, **kwargs):
-        Producer.__init__(self, name)
+        Producer.__init__(self, name, **kwargs)
 
         # Only status = 1 particles (stable particles)
         self.uses('packed', 'std::vector<pat::PackedGenParticle>', 'packedGenParticles')

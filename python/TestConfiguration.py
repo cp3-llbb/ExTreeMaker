@@ -20,17 +20,24 @@ class TestConfiguration(Configuration):
 
     producers = [
         Producers.HLT.default_configuration,
-        Producers.GenParticles.default_configuration,
+        # Producers.GenParticles.default_configuration,
         Producers.Event.default_configuration,
         Producers.Vertices.default_configuration,
-        Producers.Jets.default_configuration,
+        Producers.Jets.default_configuration.clone(
+            cut='pt() > 20 and fabs(eta()) < 2*pi'
+        ),
         Producers.Jets.default_configuration.clone(
             name='puppiJets',
             prefix='puppijet_',
-            jet_collection='slimmedJetsPuppi'
+            jet_collection='slimmedJetsPuppi',
+            cut='pt() > 20 and fabs(eta()) < 2*pi'
         ),
-        Producers.Muons.default_configuration,
-        Producers.Electrons.default_configuration,
+        Producers.Muons.default_configuration.clone(
+            cut='pt() > 10 and fabs(eta()) < 2*pi'
+        ),
+        Producers.Electrons.default_configuration.clone(
+            cut='pt() > 10 and fabs(eta()) < 2*pi'
+        ),
         Producers.METs.default_configuration
     ]
 

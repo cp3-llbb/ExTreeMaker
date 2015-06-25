@@ -11,7 +11,7 @@ import Models.Event
 class Event(Producer):
     # noinspection PyUnusedLocal
     def __init__(self, name, prefix, **kwargs):
-        Producer.__init__(self, name)
+        Producer.__init__(self, name, **kwargs)
 
         self.uses('puInfo', 'std::vector<PileupSummaryInfo>', 'addPileupInfo')
         self.uses('genInfo', 'GenEventInfoProduct', 'generator')
