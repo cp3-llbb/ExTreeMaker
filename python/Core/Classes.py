@@ -23,4 +23,7 @@ StringCollection = ROOT.std.vector('std::string')
 FloatCollection = ROOT.std.vector('float')
 BoolCollection = ROOT.std.vector('bool')
 Int8Collection = ROOT.std.vector('int8_t')
+Int16Collection = ROOT.std.vector('int16_t')
 UInt16Collection = ROOT.std.vector('uint16_t')
+
+UInt16CollectionCollection = ROOT.std.vector('std::vector<uint16_t>')
