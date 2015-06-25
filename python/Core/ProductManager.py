@@ -10,10 +10,14 @@ class ProductManager:
             self.__dict__['_instance'] = instance
 
         def __getattr__(self, item):
+            lookup = item
             if not item.startswith(self._prefix):
-                item = self._prefix + item
+                lookup = self._prefix + item
 
-            return self._instance.__getattr__(item)
+            obj = self._instance.__getattr__(lookup)
+            self.__dict__[item] = obj
+
+            return obj
 
         def __setattr__(self, item, value):
             if not item.startswith(self._prefix):
