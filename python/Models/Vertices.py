@@ -1,8 +1,7 @@
 __author__ = 'obondu'
 
-from Candidates import Candidates
-
+from pytree import TreeModel
 import ROOT
 
-class Vertices(Candidates):
+class Vertices(TreeModel):
     position = ROOT.vector('ROOT::Math::XYZPoint')

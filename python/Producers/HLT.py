@@ -7,7 +7,7 @@ import Models.HLT
 class HLT(Producer):
 
     def __init__(self, name, prefix, **kwargs):
-        Producer.__init__(self, name)
+        Producer.__init__(self, name, **kwargs)
 
         self.uses('triggerResults', 'edm::TriggerResults', ('TriggerResults', '', 'HLT'))
         self.uses('prescales', 'pat::PackedTriggerPrescales', 'patTrigger')

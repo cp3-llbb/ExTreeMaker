@@ -10,7 +10,7 @@ from Producers.Helper import fill_candidate, fill_isolations
 class Muons(Producer):
 
     def __init__(self, name, prefix, muon_collection, vertex_collection, **kwargs):
-        Producer.__init__(self, name)
+        Producer.__init__(self, name, **kwargs)
 
         self._effective_areas_R03 = kwargs['effective_areas_R03'] if 'effective_areas_R03' in kwargs else None
         self._effective_areas_R04 = kwargs['effective_areas_R04'] if 'effective_areas_R04' in kwargs else None
@@ -26,6 +26,9 @@ class Muons(Producer):
         primary_vertex = event.vertices[0]
         rho = event.rho[0]
         for muon in muons:
+            if not self.pass_cut(muon):
+                continue
+
             fill_candidate(muon, product)
             product.isLoose.push_back(muon.isLooseMuon())
             product.isMedium.push_back(muon.isMediumMuon())

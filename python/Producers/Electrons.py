@@ -10,7 +10,7 @@ from Producers.Helper import fill_candidate, fill_isolations
 class Electrons(Producer):
 
     def __init__(self, name, prefix, electron_collection, **kwargs):
-        Producer.__init__(self, name)
+        Producer.__init__(self, name, **kwargs)
 
         self._effective_areas_R03 = kwargs['effective_areas_R03'] if 'effective_areas_R03' in kwargs else None
         self._effective_areas_R04 = kwargs['effective_areas_R04'] if 'effective_areas_R04' in kwargs else None
@@ -24,6 +24,9 @@ class Electrons(Producer):
         product = getattr(products, self._name)
         rho = event.rho[0]
         for electron in electrons:
+            if not self.pass_cut(electron):
+                continue
+
             fill_candidate(electron, product)
 
             product.supercluster_eta.push_back(electron.superCluster().eta())

@@ -10,8 +10,8 @@ from Helper import fill_candidate
 
 class Jets(Producer):
 
-    def __init__(self, name, prefix, jet_collection):
-        Producer.__init__(self, name)
+    def __init__(self, name, prefix, jet_collection, **kwargs):
+        Producer.__init__(self, name, **kwargs)
 
         self.btag_branch_created = False
 
@@ -22,6 +22,9 @@ class Jets(Producer):
         jets = getattr(event, self._name)
         product = getattr(products, self._name)
         for jet in jets:
+            if not self.pass_cut(jet):
+                continue
+
             fill_candidate(jet, product)
 
             product.jecFactor.push_back(jet.jecFactor(0))
