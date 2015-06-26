@@ -29,7 +29,7 @@ ExTreeMaker
 
  ```
  cd ${CMSSW_BASE}/src/cp3_llbb/ExTreeMaker/python
- ./../bin/python runFramework.py -c TestConfiguration -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100
+ ./../bin/python ./../scripts/runFramework.py -c TestConfiguration -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100
  ```
  
 # When willing to commit things
@@ -78,7 +78,7 @@ Select 'Deployment configuration', and choose 'ingrid' (or whatever name you use
 
 Final step is to tell PyCharm how-to execute the framework on ingrid. Go to Run > Edit configurations... Click on the green plus button and choose 'Python'. Name your new run configuration as you want (ingrid for example...). In the configuration tab, set:
 
-* Script: click on the '...' button to browse. Select the file 'python/runFramework.py'
+* Script: click on the '...' button to browse. Select the file 'scripts/runFramework.py'
 * Script parameters: ``-c TestConfiguration -i /home/fynu/obondu/storage/MINIAODSIM/RelValTTbar_13_PU25ns_MCRUN2_74_V9_gensim71X-v1.root --nEvents 100`` will allow you to get started
 * Python interpreter: choose here your remote interpreter (something like ``sftp://...``)
 * Working directory: Browse and choose the 'python' folder
